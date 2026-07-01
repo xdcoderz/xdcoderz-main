@@ -7,7 +7,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-neutral-500">
-        <span>{product.category}</span>
+        <span>{product.platformGroup}</span>
         <span className="size-1 rounded-full bg-neutral-300" />
         <span>{product.status}</span>
       </div>
@@ -15,6 +15,16 @@ export function ProductCard({ product }: { product: Product }) {
         {product.name}
       </h3>
       <p className="mt-2 text-lg font-medium text-teal-800">{product.tagline}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {product.platforms.map((platform) => (
+          <span
+            key={platform}
+            className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-700"
+          >
+            {platform}
+          </span>
+        ))}
+      </div>
       <p className="mt-4 text-sm leading-6 text-neutral-650">{product.summary}</p>
       <div className="mt-6">
         <ButtonLink href={routes.product(product.slug)} variant="secondary">

@@ -1,36 +1,35 @@
 import type { Metadata } from "next";
-import { ServiceCard } from "@/components/service/ServiceCard";
+import { WorkCard } from "@/components/work/WorkCard";
 import { Section } from "@/components/ui/Section";
-import { services } from "@/data/services";
+import { workItems } from "@/data/work";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Work",
   description:
-    "XDCoderz services include websites, web apps, Android apps, desktop apps, SaaS MVPs, backend APIs, automation, redesigns, and maintenance.",
+    "Explore XDCoderz product builds, brand systems, and software work across desktop, web, Android, SaaS, and automation.",
 };
 
-export default function ServicesPage() {
+export default function WorkPage() {
   return (
     <>
       <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
-            Services
+            Work
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl">
-            Software services across platforms.
+            Product builds, brand systems, and practical software work.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-neutral-650">
-            XDCoderz can build websites, web apps, Android apps, desktop apps,
-            SaaS MVPs, backend systems, automations, and the support work needed
-            to keep them running.
+            This page will grow into the public record of XDCoderz products,
+            client work, software experiments, and case studies.
           </p>
         </div>
       </section>
       <Section>
         <div className="grid gap-5 md:grid-cols-3">
-          {services.map((service) => (
-            <ServiceCard key={service.slug} service={service} />
+          {workItems.map((item) => (
+            <WorkCard key={item.title} item={item} />
           ))}
         </div>
       </Section>

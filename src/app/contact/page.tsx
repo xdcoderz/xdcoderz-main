@@ -6,12 +6,15 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact XDCoderz for product support, website development, custom software, or automation work.",
+    "Contact XDCoderz for product support, websites, desktop apps, Android apps, web apps, SaaS MVPs, automation, or custom software work.",
 };
 
 const reasons = [
   "Website development",
-  "Custom software or web app",
+  "Web application development",
+  "Android app development",
+  "Desktop app development",
+  "SaaS MVP development",
   "Workflow automation",
   "GridForge support",
   "Feature request or product idea",
@@ -29,8 +32,9 @@ export default function ContactPage() {
             Talk to XDCoderz.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-neutral-650">
-            Reach out for product support, website development, custom software,
-            automation, or a new idea that needs a practical build.
+            Reach out for product support, websites, desktop apps, Android apps,
+            web apps, SaaS MVPs, automation, or a new idea that needs a
+            practical build.
           </p>
         </div>
       </section>

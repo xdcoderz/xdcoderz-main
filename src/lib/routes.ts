@@ -2,6 +2,8 @@ export const routes = {
   home: "/",
   products: "/products",
   services: "/services",
+  work: "/work",
+  roadmap: "/roadmap",
   contact: "/contact",
   product: (slug: string) => `/products/${slug}`,
   productDownload: (slug: string) => `/products/${slug}/download`,

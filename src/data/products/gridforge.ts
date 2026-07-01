@@ -4,8 +4,9 @@ export const gridforge: Product = {
   slug: "gridforge",
   name: "GridForge",
   category: "Desktop utility",
+  platformGroup: "Desktop Apps",
   status: "Available",
-  platform: "Windows",
+  platforms: ["Windows"],
   tagline: "Messy table in. Clean Excel out.",
   summary:
     "A free Windows utility that converts table images into JSON, CSV, and Excel files using AI or offline OCR.",
@@ -47,7 +48,7 @@ export const gridforge: Product = {
     {
       label: "Offline Pack ZIP Backup",
       fileName: "GridForge-Offline-Pack-0.1.0.zip",
-      href: "https://github.com/xdcoderz/gridforge-releases/releases/download/v0.1.0/GridForge-Offline-Pack-0.1.0.exe",
+      href: "https://github.com/xdcoderz/gridforge-releases/releases/download/v0.1.0/GridForge-Offline-Pack-0.1.0.zip",
       size: "98 MB",
       sha256:
         "5569C76C63DC3D3C552970869C04A3C8BF2A65C56334BF822916863C22207C2F",

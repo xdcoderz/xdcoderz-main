@@ -36,3 +36,37 @@ a {
   background: #0f766e;
   color: #ffffff;
 }
+
+.surface-grid {
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 184, 166, 0.18), transparent 42%),
+    linear-gradient(135deg, #050505 0%, #111111 48%, #071412 100%);
+  background-size:
+    44px 44px,
+    44px 44px,
+    100% 100%,
+    100% 100%;
+}
+
+.signal-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.signal-panel::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.16), transparent),
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 28px;
+  opacity: 0.65;
+}
+
+.signal-panel > * {
+  position: relative;
+}

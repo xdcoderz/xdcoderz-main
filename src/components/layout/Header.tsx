@@ -5,6 +5,8 @@ import { routes } from "@/lib/routes";
 const navItems = [
   { label: "Products", href: "/#products" },
   { label: "Services", href: "/#services" },
+  { label: "Work", href: "/#work" },
+  { label: "Roadmap", href: "/#roadmap" },
   { label: "Contact", href: "/#contact" },
 ];
 

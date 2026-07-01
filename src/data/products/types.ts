@@ -11,8 +11,17 @@ export type Product = {
   slug: string;
   name: string;
   category: string;
+  platformGroup:
+    | "Desktop Apps"
+    | "Android Apps"
+    | "Web Apps"
+    | "SaaS Products"
+    | "Developer Tools"
+    | "Automation Tools"
+    | "Utilities"
+    | "Experiments";
   status: "Available" | "Coming soon";
-  platform: string;
+  platforms: string[];
   tagline: string;
   summary: string;
   description: string;

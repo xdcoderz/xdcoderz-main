@@ -24,6 +24,8 @@ export function Footer() {
           <div className="mt-4 grid gap-3 text-sm text-neutral-300">
             <Link href={routes.products}>Products</Link>
             <Link href={routes.services}>Services</Link>
+            <Link href={routes.work}>Work</Link>
+            <Link href={routes.roadmap}>Roadmap</Link>
             <Link href={routes.contact}>Contact</Link>
           </div>
         </div>
@@ -40,11 +42,12 @@ export function Footer() {
         <div>
           <h2 className="text-sm font-semibold">Services</h2>
           <div className="mt-4 grid gap-3 text-sm text-neutral-300">
-            {services.map((service) => (
+            {services.slice(0, 6).map((service) => (
               <Link key={service.slug} href={routes.service(service.slug)}>
                 {service.name}
               </Link>
             ))}
+            <Link href={routes.services}>All services</Link>
           </div>
         </div>
       </div>

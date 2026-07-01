@@ -43,7 +43,7 @@ export default function GridForgePage() {
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
-              {gridforge.category} for {gridforge.platform}
+              {gridforge.category} for {gridforge.platforms.join(", ")}
             </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight text-neutral-950 sm:text-6xl">
               {gridforge.name}
