@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { BlogCategory, BlogPost, BlogPostMeta } from "./types";
+import type { BlogCategory, BlogPost, BlogPostMeta, WeeklyMarketDigest } from "./types";
 
 const blogDirectory = path.join(process.cwd(), "src", "content", "blog");
 const postFilePattern = /\.(md|mdx)$/;
+const digestFilePattern = /\.json$/;
 
 function parseList(value: string | undefined) {
   if (!value) {
@@ -65,6 +66,7 @@ function parseFrontmatter(source: string, slug: string): BlogPost {
     tags: parseList(rawMeta.tags),
     featured: parseBoolean(rawMeta.featured),
     coverImage: rawMeta.coverImage,
+    format: "markdown",
   };
 
   const requiredFields: Array<keyof BlogPostMeta> = [
@@ -88,6 +90,46 @@ function parseFrontmatter(source: string, slug: string): BlogPost {
   };
 }
 
+function parseDigest(source: string, fileSlug: string): BlogPost {
+  const digest = JSON.parse(source) as WeeklyMarketDigest;
+
+  if (digest.format !== "weekly-market-digest-v3") {
+    throw new Error(`Digest "${fileSlug}" uses an unsupported format.`);
+  }
+  if (!Array.isArray(digest.events) || digest.events.length < 6 || digest.events.length > 10) {
+    throw new Error(`Digest "${fileSlug}" must contain 6-10 events.`);
+  }
+  if (digest.slug !== fileSlug) {
+    throw new Error(`Digest filename must match its slug: "${digest.slug}".`);
+  }
+
+  const searchableText = digest.events
+    .flatMap((event) => [
+      event.headline,
+      event.description,
+      ...Object.values(event.analysis),
+      ...Object.values(event.opportunity),
+    ])
+    .join(" ");
+  const minutes = Math.max(1, Math.ceil(searchableText.split(/\s+/).filter(Boolean).length / 220));
+
+  return {
+    slug: digest.slug,
+    title: digest.title,
+    description: digest.seoDescription,
+    date: digest.date,
+    category: digest.category,
+    author: digest.author,
+    tags: digest.tags,
+    featured: digest.featured,
+    coverImage: digest.events.find((event) => event.source.imageUrl)?.source.imageUrl,
+    format: digest.format,
+    content: searchableText,
+    readingTime: `${minutes} min read`,
+    digest,
+  };
+}
+
 export function getAllBlogPosts() {
   if (!fs.existsSync(blogDirectory)) {
     return [];
@@ -95,12 +137,14 @@ export function getAllBlogPosts() {
 
   return fs
     .readdirSync(blogDirectory)
-    .filter((fileName) => postFilePattern.test(fileName))
+    .filter((fileName) => postFilePattern.test(fileName) || digestFilePattern.test(fileName))
     .map((fileName) => {
-      const slug = fileName.replace(postFilePattern, "");
+      const slug = fileName.replace(postFilePattern, "").replace(digestFilePattern, "");
       const source = fs.readFileSync(path.join(blogDirectory, fileName), "utf8");
 
-      return parseFrontmatter(source, slug);
+      return digestFilePattern.test(fileName)
+        ? parseDigest(source, slug)
+        : parseFrontmatter(source, slug);
     })
     .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
 }

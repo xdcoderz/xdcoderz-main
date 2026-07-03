@@ -32,6 +32,14 @@ a {
   text-decoration: none;
 }
 
+.digest-editorial {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.digest-layout {
+  letter-spacing: 0;
+}
+
 ::selection {
   background: #0f766e;
   color: #ffffff;
