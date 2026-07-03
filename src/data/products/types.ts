@@ -21,6 +21,7 @@ export type Product = {
     | "Utilities"
     | "Experiments";
   status: "Available" | "Coming soon";
+  releasedAt: string;
   platforms: string[];
   tagline: string;
   summary: string;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { features } from "@/config/features";
 import { products } from "@/data/products";
 import { services } from "@/data/services";
 import { routes } from "@/lib/routes";
@@ -25,6 +26,7 @@ export function Footer() {
             <Link href={routes.products}>Products</Link>
             <Link href={routes.services}>Services</Link>
             <Link href={routes.work}>Work</Link>
+            {features.blog && <Link href={routes.blog}>Blog</Link>}
             <Link href={routes.roadmap}>Roadmap</Link>
             <Link href={routes.contact}>Contact</Link>
           </div>
@@ -52,7 +54,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-6xl border-t border-white/10 pt-6 text-sm text-neutral-400">
-        © {new Date().getFullYear()} XDCoderz. All rights reserved.
+        &copy; {new Date().getFullYear()} XDCoderz. All rights reserved.
       </div>
     </footer>
   );

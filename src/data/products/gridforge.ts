@@ -6,6 +6,7 @@ export const gridforge: Product = {
   category: "Desktop utility",
   platformGroup: "Desktop Apps",
   status: "Available",
+  releasedAt: "2026-06-26",
   platforms: ["Windows"],
   tagline: "Messy table in. Clean Excel out.",
   summary:

@@ -1,8 +1,8 @@
 export const site = {
   name: "XDCoderz",
   url: "https://www.xdcoderz.xyz",
-  tagline: "Useful software for web, desktop, mobile, and beyond.",
+  tagline: "Software that pays back your time.",
   description:
-    "XDCoderz builds practical software products and services across desktop, Android, web, SaaS, automation, and future platforms.",
+    "XDCoderz builds focused software products and custom digital systems that remove friction and move work forward.",
   email: "support@xdcoderz.com",
 };

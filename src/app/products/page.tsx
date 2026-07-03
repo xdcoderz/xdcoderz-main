@@ -1,55 +1,44 @@
 import type { Metadata } from "next";
-import { ProductCard } from "@/components/product/ProductCard";
-import { Section } from "@/components/ui/Section";
+import { ProductExplorer } from "@/components/product/ProductExplorer";
 import { products } from "@/data/products";
-import { productCategories } from "@/data/products/categories";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Explore XDCoderz desktop apps, Android apps, web apps, SaaS products, utilities, automation tools, and experiments.",
+    "Explore XDCoderz software products for desktop, Android, web, SaaS, automation, and more.",
 };
 
 export default function ProductsPage() {
   return (
     <>
-      <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
+      <section className="surface-grid border-b border-neutral-800 bg-neutral-950 px-6 py-16 text-white sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
-            Products
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-300">
+            Product catalog
           </p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl">
-            Products across desktop, Android, web, SaaS, and beyond.
+          <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+            Useful software. Visible payoff.
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-neutral-650">
-            The product catalog starts with GridForge and is structured to grow
-            cleanly as new XDCoderz apps, tools, SaaS products, and experiments
-            launch.
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-neutral-300">
+            Browse focused products built to remove friction, sharpen workflows,
+            and help you reach the useful result sooner.
           </p>
         </div>
       </section>
-      <Section
-        title="Product categories"
-        description="These categories are intentionally broad so future software lines can be added without changing the page model."
-      >
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {productCategories.map((category) => (
-            <div
-              key={category}
-              className="rounded-lg border border-neutral-200 bg-white p-4 text-sm font-semibold text-neutral-800 shadow-sm"
-            >
-              {category}
-            </div>
-          ))}
+
+      <section id="catalog" className="scroll-mt-20 bg-neutral-50 px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-9 max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+              Browse by category
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl">
+              Choose the software that moves your work forward.
+            </h2>
+          </div>
+          <ProductExplorer products={products} />
         </div>
-      </Section>
-      <Section className="bg-neutral-50" title="Available products">
-        <div className="grid gap-5 md:grid-cols-2">
-          {products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      </Section>
+      </section>
     </>
   );
 }
