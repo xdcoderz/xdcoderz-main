@@ -5,7 +5,8 @@ export type BlogCategory =
   | "SaaS Notes"
   | "Productivity"
   | "Case Studies"
-  | "Founder Notes";
+  | "Founder Notes"
+  | "Market Signals";
 
 export type BlogPostMeta = {
   slug: string;

@@ -30,12 +30,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
   });
   const serviceRoutes = services.map((service) => routes.service(service.slug));
-  const blogRoutes = features.blog
-    ? getAllBlogPosts().map((post) => routes.blogPost(post.slug))
-    : [];
+  const blogRoutes = features.blog ? getAllBlogPosts() : [];
 
-  return [...staticRoutes, ...productRoutes, ...serviceRoutes, ...blogRoutes].map((route) => ({
+  const standardRoutes = [...staticRoutes, ...productRoutes, ...serviceRoutes].map((route) => ({
     url: `${site.url}${route}`,
     lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: route === routes.home ? 1 : 0.7,
   }));
+
+  const blogSitemapRoutes = blogRoutes.map((post) => ({
+    url: `${site.url}${routes.blogPost(post.slug)}`,
+    lastModified: new Date(post.date),
+    changeFrequency: "weekly" as const,
+    priority: post.featured ? 0.8 : 0.6,
+  }));
+
+  return [...standardRoutes, ...blogSitemapRoutes];
 }

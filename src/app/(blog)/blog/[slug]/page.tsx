@@ -37,14 +37,27 @@ export async function generateMetadata({
     };
   }
 
+  const url = `${site.url}${routes.blogPost(post.slug)}`;
+
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
-      url: `${site.url}${routes.blogPost(post.slug)}`,
+      url,
+      publishedTime: post.date,
+      authors: [post.author],
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
     },
   };
 }
@@ -61,8 +74,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const postUrl = `${site.url}${routes.blogPost(post.slug)}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      "@type": "Organization",
+      name: post.author,
+      url: site.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+    keywords: post.tags.join(", "),
+  };
+
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="border-b border-neutral-200 bg-neutral-50 px-6 py-14 sm:py-18">
         <div className="mx-auto max-w-3xl">
           <ButtonLink href={routes.blog} variant="ghost" className="-ml-5 mb-8">

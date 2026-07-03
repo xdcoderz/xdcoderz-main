@@ -11,11 +11,22 @@ import {
 } from "@/features/blog/blog-utils";
 import { SubscriberCta } from "@/features/subscribers/components/SubscriberCta";
 import { routes } from "@/lib/routes";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Blog",
   description:
     "Practical XDCoderz notes on software products, automation, web growth, and systems that give businesses leverage.",
+  alternates: {
+    canonical: `${site.url}${routes.blog}`,
+  },
+  openGraph: {
+    title: "Blog",
+    description:
+      "Practical XDCoderz notes on software products, automation, web growth, and systems that give businesses leverage.",
+    url: `${site.url}${routes.blog}`,
+    type: "website",
+  },
 };
 
 export default function BlogPage() {
