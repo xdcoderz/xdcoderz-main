@@ -40,15 +40,15 @@ export default function BlogPage() {
 
   return (
     <>
-      <section className="surface-grid border-b border-neutral-800 bg-neutral-950 px-6 py-16 text-white sm:py-20">
+      <section className="hero-surface border-b border-neutral-200 px-6 py-16 sm:py-20 dark:border-white/10">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700 dark:text-sky-300">
             XDCoderz journal
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl">
+          <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-6xl dark:text-white">
             The thinking behind software that earns its keep.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-300">
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-650 dark:text-neutral-300">
             Sharp notes on products, automation, web growth, and the systems
             that help ambitious operators move with less drag.
           </p>
@@ -59,7 +59,7 @@ export default function BlogPage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-9 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
                 Featured thinking
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl">
@@ -83,7 +83,7 @@ export default function BlogPage() {
       <section className="border-y border-neutral-200 bg-neutral-50 px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-9 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
               Browse the archive
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl">

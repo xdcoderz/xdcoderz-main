@@ -11,13 +11,13 @@ type BlogPostCardProps = {
 export function BlogPostCard({ post, featured = false }: BlogPostCardProps) {
   return (
     <article
-      className={`group rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-700/40 hover:shadow-md ${
+      className={`group rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-700/40 hover:shadow-md ${
         featured ? "md:grid md:grid-cols-[1fr_auto] md:gap-8" : ""
       }`}
     >
       <div>
         <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
-          <span className="rounded-md bg-teal-50 px-3 py-1 font-semibold text-teal-800">
+          <span className="rounded-md bg-sky-50 px-3 py-1 font-semibold text-sky-800">
             {post.category}
           </span>
           <span className="inline-flex items-center gap-1.5">
@@ -51,7 +51,7 @@ export function BlogPostCard({ post, featured = false }: BlogPostCardProps) {
       </div>
       <Link
         href={routes.blogPost(post.slug)}
-        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-teal-800 group-hover:text-teal-950 md:self-end"
+        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 group-hover:text-sky-950 md:self-end"
       >
         Read article
         <ArrowUpRight size={16} aria-hidden="true" />

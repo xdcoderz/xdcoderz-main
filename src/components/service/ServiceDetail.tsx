@@ -9,7 +9,7 @@ export function ServiceDetail({ service }: { service: Service }) {
     <>
       <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
             {service.eyebrow}
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl">
@@ -30,7 +30,7 @@ export function ServiceDetail({ service }: { service: Service }) {
               key={outcome}
               className="flex gap-3 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm"
             >
-              <CheckCircle2 className="mt-0.5 shrink-0 text-teal-700" size={20} />
+              <CheckCircle2 className="mt-0.5 shrink-0 text-sky-700" size={20} />
               <span className="font-medium text-neutral-800">{outcome}</span>
             </div>
           ))}

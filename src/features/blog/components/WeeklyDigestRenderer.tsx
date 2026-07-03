@@ -95,7 +95,7 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
                   href={event.source.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-teal-800 hover:text-teal-950"
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-sky-800 hover:text-sky-950"
                 >
                   Read original reporting at {event.source.name}
                   <ArrowUpRight size={15} aria-hidden="true" />
@@ -193,7 +193,7 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
             <li key={event.id} className="border-t border-neutral-200 py-4">
               <a
                 href={`#opportunity-${event.id}`}
-                className="grid grid-cols-[2rem_1fr] gap-3 text-sm text-neutral-700 hover:text-teal-900"
+                className="grid grid-cols-[2rem_1fr] gap-3 text-sm text-neutral-700 hover:text-sky-900"
               >
                 <span className="digest-editorial text-neutral-400">{storyNumber(index)}</span>
                 <span className="font-semibold">{event.opportunity.name}</span>

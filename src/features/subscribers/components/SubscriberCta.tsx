@@ -8,7 +8,7 @@ export function SubscriberCta() {
     return (
       <div className="rounded-lg border border-neutral-200 bg-neutral-950 p-6 text-white">
         <div className="flex items-start gap-4">
-          <span className="grid size-11 shrink-0 place-items-center rounded-md bg-teal-300 text-neutral-950">
+          <span className="grid size-11 shrink-0 place-items-center rounded-md bg-sky-300 text-neutral-950">
             <Mail size={20} aria-hidden="true" />
           </span>
           <div>
@@ -21,7 +21,7 @@ export function SubscriberCta() {
             </p>
             <ButtonLink
               href={routes.contact}
-              className="mt-5 bg-teal-300 text-neutral-950 hover:bg-teal-200"
+              className="mt-5 bg-sky-300 text-neutral-950 hover:bg-sky-200"
             >
               Join through contact
             </ButtonLink>
@@ -43,11 +43,11 @@ export function SubscriberCta() {
           type="email"
           required
           placeholder="you@example.com"
-          className="min-h-12 flex-1 rounded-md border border-white/15 bg-white px-4 text-neutral-950 outline-none focus:border-teal-300"
+          className="min-h-12 flex-1 rounded-md border border-white/15 bg-white px-4 text-neutral-950 outline-none focus:border-sky-300"
         />
         <button
           type="submit"
-          className="min-h-12 rounded-md bg-teal-300 px-5 text-sm font-semibold text-neutral-950 transition hover:bg-teal-200"
+          className="min-h-12 rounded-md bg-sky-300 px-5 text-sm font-semibold text-neutral-950 transition hover:bg-sky-200"
         >
           Subscribe
         </button>

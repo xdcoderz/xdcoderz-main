@@ -25,7 +25,7 @@ export default function ContactPage() {
     <>
       <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
             Contact
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl">
@@ -51,14 +51,14 @@ export default function ContactPage() {
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-md bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-800"
+              className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-md bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
             >
               <Send size={16} aria-hidden="true" />
               {site.email}
             </a>
           </article>
           <article className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-            <span className="grid size-11 place-items-center rounded-md bg-teal-700 text-white">
+            <span className="grid size-11 place-items-center rounded-md bg-sky-700 text-white">
               <MessageSquare size={22} aria-hidden="true" />
             </span>
             <h2 className="mt-5 text-2xl font-semibold">Good reasons to contact</h2>

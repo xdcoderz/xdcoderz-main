@@ -6,7 +6,7 @@ import { routes } from "@/lib/routes";
 export function ServiceCard({ service }: { service: Service }) {
   return (
     <article className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-700">
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-sky-700">
         {service.eyebrow}
       </p>
       <h3 className="mt-4 text-2xl font-semibold text-neutral-950">

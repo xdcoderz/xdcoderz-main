@@ -14,7 +14,7 @@ export default function GridForgeReleasesPage() {
     <>
       <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
             Releases
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl">

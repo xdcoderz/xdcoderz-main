@@ -2,8 +2,8 @@ import type { RoadmapItem } from "@/data/roadmap";
 
 const statusStyles: Record<RoadmapItem["status"], string> = {
   Live: "border-emerald-200 bg-emerald-50 text-emerald-800",
-  Released: "border-teal-200 bg-teal-50 text-teal-800",
-  "In development": "border-cyan-200 bg-cyan-50 text-cyan-800",
+  Released: "border-sky-200 bg-sky-50 text-sky-800",
+  "In development": "border-amber-200 bg-amber-50 text-amber-800",
   Planned: "border-neutral-200 bg-neutral-50 text-neutral-700",
   Exploring: "border-amber-200 bg-amber-50 text-amber-800",
 };

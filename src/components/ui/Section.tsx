@@ -22,7 +22,7 @@ export function Section({
   const headingColor = tone === "dark" ? "text-white" : "text-neutral-950";
   const descriptionColor =
     tone === "dark" ? "text-neutral-300" : "text-neutral-650";
-  const eyebrowColor = tone === "dark" ? "text-teal-300" : "text-teal-700";
+  const eyebrowColor = tone === "dark" ? "text-sky-300" : "text-sky-700";
 
   return (
     <section id={id} className={`scroll-mt-20 px-6 py-16 sm:py-20 ${className}`}>

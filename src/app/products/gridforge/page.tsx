@@ -39,10 +39,10 @@ const modes = [
 export default function GridForgePage() {
   return (
     <>
-      <section className="border-b border-neutral-200 bg-[linear-gradient(135deg,#f7faf9_0%,#ffffff_50%,#eef8f6_100%)] px-6 py-16 sm:py-20">
+      <section className="hero-surface border-b border-neutral-200 px-6 py-16 sm:py-20 dark:border-white/10">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
               {gridforge.category} for {gridforge.platforms.join(", ")}
             </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight text-neutral-950 sm:text-6xl">
@@ -66,7 +66,7 @@ export default function GridForgePage() {
           </div>
           <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="grid size-11 place-items-center rounded-md bg-teal-700 text-white">
+              <span className="grid size-11 place-items-center rounded-md bg-sky-700 text-white">
                 <FileSpreadsheet size={22} aria-hidden="true" />
               </span>
               <div>
@@ -84,7 +84,7 @@ export default function GridForgePage() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 flex gap-3 rounded-md border border-teal-100 bg-teal-50 p-4 text-sm leading-6 text-teal-950">
+            <div className="mt-6 flex gap-3 rounded-md border border-sky-100 bg-sky-50 p-4 text-sm leading-6 text-sky-950">
               <Lock className="mt-0.5 shrink-0" size={18} aria-hidden="true" />
               <p>
                 AI Mode uses the GridForge API for extraction. Offline Mode keeps
@@ -115,7 +115,7 @@ export default function GridForgePage() {
                 <ul className="mt-5 grid gap-3 text-sm text-neutral-700">
                   {mode.points.map((point) => (
                     <li key={point} className="flex gap-3">
-                      <span className="mt-2 size-1.5 shrink-0 rounded-full bg-teal-700" />
+                      <span className="mt-2 size-1.5 shrink-0 rounded-full bg-sky-700" />
                       {point}
                     </li>
                   ))}

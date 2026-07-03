@@ -162,7 +162,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
 
           <div className="mt-14 border border-neutral-200 bg-neutral-50 p-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
               Build the advantage
             </p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-neutral-950">

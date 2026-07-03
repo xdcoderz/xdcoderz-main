@@ -26,7 +26,7 @@ function renderInline(text: string) {
         <a
           key={`${match.index}-link`}
           href={match[4]}
-          className="font-semibold text-teal-800 underline decoration-teal-200 underline-offset-4 hover:text-teal-950"
+          className="font-semibold text-sky-800 underline decoration-sky-200 underline-offset-4 hover:text-sky-950"
         >
           {match[3]}
         </a>,
@@ -96,7 +96,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       elements.push(
         <blockquote
           key={index}
-          className="my-8 border-l-4 border-teal-700 bg-teal-50 px-5 py-4 text-lg font-medium leading-8 text-neutral-900"
+          className="my-8 border-l-4 border-sky-700 bg-sky-50 px-5 py-4 text-lg font-medium leading-8 text-neutral-900"
         >
           {renderInline(quoteLines.join(" "))}
         </blockquote>,
