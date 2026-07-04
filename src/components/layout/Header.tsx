@@ -7,7 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { label: "Products", href: "/#products" },
-  { label: "Categories", href: "/#categories" },
+  { label: "Tools", href: routes.tools },
   { label: "Services", href: routes.services },
   { label: "Work", href: routes.work },
   ...(features.blog ? [{ label: "Blog", href: routes.blog }] : []),

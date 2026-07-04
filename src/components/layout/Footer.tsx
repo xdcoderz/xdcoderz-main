@@ -24,6 +24,7 @@ export function Footer() {
           <h2 className="text-sm font-semibold">Company</h2>
           <div className="mt-4 grid gap-3 text-sm text-neutral-650 dark:text-neutral-300">
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.products}>Products</Link>
+            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.tools}>Tools</Link>
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.services}>Services</Link>
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.work}>Work</Link>
             {features.blog && <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.blog}>Blog</Link>}

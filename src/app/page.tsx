@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductExplorer } from "@/components/product/ProductExplorer";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { latestProducts, products } from "@/data/products";
+import { featuredTools, ToolCard } from "@/features/tools";
 import { routes } from "@/lib/routes";
 
 export const metadata: Metadata = {
@@ -172,6 +173,37 @@ export default function Home() {
             ))}
           </div>
           <ProductExplorer products={products} showCatalogLink />
+        </div>
+      </section>
+
+      <section id="tools" className="scroll-mt-20 bg-white px-6 py-16 sm:py-24 dark:bg-neutral-950">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-300">
+                Business tools
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-neutral-950 sm:text-4xl dark:text-white">
+                Small utilities that create bigger software conversations.
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-650 dark:text-neutral-300">
+                Start with focused tools for planning, audits, and idea
+                generation. Each one is isolated as its own module, so the best
+                performers can grow into larger applications without disturbing
+                the core site.
+              </p>
+            </div>
+            <ButtonLink href={routes.tools} variant="ghost" className="self-start md:self-auto">
+              Explore all tools
+              <ArrowRight size={16} aria-hidden="true" />
+            </ButtonLink>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {featuredTools.map((tool) => (
+              <ToolCard key={tool.slug} tool={tool} compact />
+            ))}
+          </div>
         </div>
       </section>
 

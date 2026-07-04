@@ -1,6 +1,7 @@
 export const routes = {
   home: "/",
   products: "/products",
+  tools: "/tools",
   blog: "/blog",
   services: "/services",
   work: "/work",
@@ -11,6 +12,7 @@ export const routes = {
   productGuide: (slug: string) => `/products/${slug}/guide`,
   productPrivacy: (slug: string) => `/products/${slug}/privacy`,
   productReleases: (slug: string) => `/products/${slug}/releases`,
+  tool: (slug: string) => `/tools/${slug}`,
   blogPost: (slug: string) => `/blog/${slug}`,
   service: (slug: string) => `/services/${slug}`,
 };

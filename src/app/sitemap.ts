@@ -3,6 +3,7 @@ import { features } from "@/config/features";
 import { products } from "@/data/products";
 import { services } from "@/data/services";
 import { getAllBlogPosts } from "@/features/blog/blog-utils";
+import { tools } from "@/features/tools";
 import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
 
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     routes.home,
     routes.products,
+    routes.tools,
     routes.services,
     routes.work,
     routes.roadmap,
@@ -30,9 +32,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
   });
   const serviceRoutes = services.map((service) => routes.service(service.slug));
+  const toolRoutes = tools.map((tool) => routes.tool(tool.slug));
   const blogRoutes = features.blog ? getAllBlogPosts() : [];
 
-  const standardRoutes = [...staticRoutes, ...productRoutes, ...serviceRoutes].map((route) => ({
+  const standardRoutes = [...staticRoutes, ...productRoutes, ...serviceRoutes, ...toolRoutes].map((route) => ({
     url: `${site.url}${route}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
