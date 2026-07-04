@@ -1,6 +1,7 @@
 import { ArrowUpRight, Lightbulb } from "lucide-react";
 import type { WeeklyMarketDigest } from "@/features/blog/types";
 import { DigestImage } from "./DigestImage";
+import { OpportunityCopyButton } from "./OpportunityCopyButton";
 
 type WeeklyDigestRendererProps = {
   digest: WeeklyMarketDigest;
@@ -29,6 +30,20 @@ function storyNumber(index: number) {
 
 function unique(values: string[]) {
   return Array.from(new Set(values));
+}
+
+function buildOpportunityCopy(event: WeeklyMarketDigest["events"][number]) {
+  return [
+    `Builder opportunity: ${event.opportunity.name}`,
+    `Source signal: ${event.headline}`,
+    "",
+    `Target customer: ${event.opportunity.targetCustomer}`,
+    `Problem: ${event.opportunity.problem}`,
+    `Solution: ${event.opportunity.solution}`,
+    `Weekend MVP: ${event.opportunity.weekendMvp}`,
+    `Why now: ${event.opportunity.whyNow}`,
+    `First validation: ${event.opportunity.validation}`,
+  ].join("\n");
 }
 
 export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
@@ -143,9 +158,12 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
               aria-labelledby={`opportunity-title-${event.id}`}
               className="scroll-mt-24 border-x border-b border-neutral-200 px-5 py-6 sm:px-7"
             >
-              <div className="flex items-center gap-2 text-neutral-500">
-                <Lightbulb size={17} strokeWidth={1.7} aria-hidden="true" />
-                <p className="text-xs font-semibold uppercase">Builder opportunity</p>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-2 text-neutral-500">
+                  <Lightbulb size={17} strokeWidth={1.7} aria-hidden="true" />
+                  <p className="text-xs font-semibold uppercase">Builder opportunity</p>
+                </div>
+                <OpportunityCopyButton text={buildOpportunityCopy(event)} />
               </div>
               <h3 id={`opportunity-title-${event.id}`} className="mt-3 text-xl font-semibold text-neutral-950">
                 {event.opportunity.name}
