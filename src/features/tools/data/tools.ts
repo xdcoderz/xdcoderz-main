@@ -23,7 +23,7 @@ export const tools: ToolDefinition[] = [
     slug: "software-cost-estimator",
     name: "Software Cost Estimator",
     category: "Planning Tools",
-    status: "Preview",
+    status: "Live",
     featured: true,
     summary: "Estimate the investment range for a website, app, SaaS, or automation build.",
     description:
@@ -240,4 +240,3 @@ export function getTool(slug: string) {
 export function getToolsByCategory(category: ToolCategory) {
   return tools.filter((tool) => tool.category === category);
 }
-
