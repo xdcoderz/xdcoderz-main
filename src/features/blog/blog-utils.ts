@@ -153,6 +153,36 @@ export function getBlogPost(slug: string) {
   return getAllBlogPosts().find((post) => post.slug === slug);
 }
 
+export function getRelatedBlogPosts(slug: string, limit = 3) {
+  const posts = getAllBlogPosts();
+  const currentPost = posts.find((post) => post.slug === slug);
+
+  if (!currentPost) {
+    return [];
+  }
+
+  return posts
+    .filter((post) => post.slug !== slug)
+    .map((post) => {
+      const sharedTags = post.tags.filter((tag) => currentPost.tags.includes(tag)).length;
+      const categoryScore = post.category === currentPost.category ? 2 : 0;
+
+      return {
+        post,
+        score: sharedTags * 3 + categoryScore,
+      };
+    })
+    .sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+
+      return Date.parse(b.post.date) - Date.parse(a.post.date);
+    })
+    .slice(0, limit)
+    .map(({ post }) => post);
+}
+
 export function getFeaturedBlogPosts() {
   const posts = getAllBlogPosts();
   const featured = posts.filter((post) => post.featured);

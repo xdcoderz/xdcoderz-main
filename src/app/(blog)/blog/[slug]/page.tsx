@@ -3,9 +3,14 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { features } from "@/config/features";
-import { getAllBlogPosts, getBlogPost } from "@/features/blog/blog-utils";
+import { getAllBlogPosts, getBlogPost, getRelatedBlogPosts } from "@/features/blog/blog-utils";
+import { BlogFaq, type BlogFaqItem } from "@/features/blog/components/BlogFaq";
+import { BlogShareActions } from "@/features/blog/components/BlogShareActions";
 import { MarkdownRenderer } from "@/features/blog/components/MarkdownRenderer";
+import { ReadingProgressBar } from "@/features/blog/components/ReadingProgressBar";
+import { RelatedPosts } from "@/features/blog/components/RelatedPosts";
 import { WeeklyDigestRenderer } from "@/features/blog/components/WeeklyDigestRenderer";
+import type { BlogPost, WeeklyMarketDigest } from "@/features/blog/types";
 import { SubscriberCta } from "@/features/subscribers/components/SubscriberCta";
 import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
@@ -15,6 +20,53 @@ type BlogPostPageProps = {
     slug: string;
   }>;
 };
+
+function getGeneratedOgImageUrl(post: BlogPost) {
+  return `${site.url}/api/og/blog/${post.slug}`;
+}
+
+function buildFaqItems(post: BlogPost, digest?: WeeklyMarketDigest): BlogFaqItem[] {
+  if (digest) {
+    return [
+      {
+        question: "What is this weekly market digest for?",
+        answer:
+          "It turns the week's important technology, business, and policy signals into practical context for Indian founders, operators, and weekend builders.",
+      },
+      {
+        question: "How are stories selected?",
+        answer: `Stories are selected for recency, global significance, concrete India relevance, and commercial usefulness across the ${digest.coverage.start} to ${digest.coverage.end} coverage window.`,
+      },
+      {
+        question: "How should I use the Builder Opportunity sections?",
+        answer:
+          "Treat each opportunity as a first project brief. Copy it, validate the pain with a few target users, and only then turn the strongest idea into a weekend MVP.",
+      },
+      {
+        question: "Does this replace full market research?",
+        answer:
+          "No. It is a sharp starting point for deciding what deserves deeper research, customer calls, and product experiments.",
+      },
+    ];
+  }
+
+  return [
+    {
+      question: `What is "${post.title}" about?`,
+      answer: post.description,
+    },
+    {
+      question: "Who should read this post?",
+      answer:
+        "It is written for founders, operators, and teams looking for practical software, automation, and product leverage.",
+    },
+    {
+      question: "Can XDCoderz help implement this?",
+      answer:
+        "Yes. XDCoderz helps turn useful software ideas into focused products, internal tools, websites, and automations.",
+    },
+  ];
+}
 
 export function generateStaticParams() {
   if (!features.blog) {
@@ -39,7 +91,14 @@ export async function generateMetadata({
   }
 
   const url = `${site.url}${routes.blogPost(post.slug)}`;
-  const images = post.coverImage ? [{ url: post.coverImage }] : undefined;
+  const images = [
+    {
+      url: getGeneratedOgImageUrl(post),
+      width: 1200,
+      height: 630,
+      alt: post.title,
+    },
+  ];
 
   return {
     title: post.title,
@@ -81,7 +140,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const postUrl = `${site.url}${routes.blogPost(post.slug)}`;
   const digest = post.format === "weekly-market-digest-v3" ? post.digest : undefined;
   const isDigest = Boolean(digest);
-  const jsonLd = {
+  const faqItems = buildFaqItems(post, digest);
+  const relatedPosts = getRelatedBlogPosts(post.slug);
+  const postImageUrl = getGeneratedOgImageUrl(post);
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
@@ -103,14 +165,51 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       "@id": postUrl,
     },
     keywords: post.tags.join(", "),
-    image: post.coverImage,
+    image: postImageUrl,
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: site.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${site.url}${routes.blog}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 
   return (
     <article>
+      <ReadingProgressBar />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd, faqJsonLd]) }}
       />
       <header className="border-b border-neutral-200 bg-neutral-50 px-6 py-14 sm:py-18">
         <div className={`mx-auto ${isDigest ? "max-w-5xl" : "max-w-3xl"}`}>
@@ -150,6 +249,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </>
             ) : null}
           </div>
+          <div className="mt-7">
+            <BlogShareActions title={post.title} url={postUrl} />
+          </div>
         </div>
       </header>
 
@@ -160,6 +262,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ) : (
             <MarkdownRenderer content={post.content} />
           )}
+
+          <BlogFaq items={faqItems} />
+          <RelatedPosts posts={relatedPosts} />
 
           <div className="mt-14 border border-neutral-200 bg-neutral-50 p-6">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">

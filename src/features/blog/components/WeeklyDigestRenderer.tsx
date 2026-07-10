@@ -53,6 +53,50 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
 
   return (
     <div className="digest-layout">
+      <nav
+        aria-label="Weekly digest table of contents"
+        className="sticky top-0 z-20 -mx-6 border-b border-neutral-200 bg-white/95 px-6 py-3 backdrop-blur"
+      >
+        <div className="flex items-center gap-3 overflow-x-auto text-sm">
+          <a
+            href="#digest-glance"
+            className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900"
+          >
+            Overview
+          </a>
+          <span aria-hidden="true" className="shrink-0 text-neutral-300">
+            /
+          </span>
+          <div className="flex shrink-0 items-center gap-2">
+            {digest.events.map((event, index) => (
+              <a
+                key={event.id}
+                href={`#story-${event.id}`}
+                title={event.headline}
+                className="inline-flex h-8 w-8 items-center justify-center border border-neutral-200 font-semibold text-neutral-600 hover:border-sky-300 hover:text-sky-900"
+              >
+                {storyNumber(index)}
+              </a>
+            ))}
+          </div>
+          <span aria-hidden="true" className="shrink-0 text-neutral-300">
+            /
+          </span>
+          <a
+            href="#opportunity-index"
+            className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900"
+          >
+            Opportunities
+          </a>
+          <a href="#faq" className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900">
+            FAQ
+          </a>
+          <a href="#methodology" className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900">
+            Methodology
+          </a>
+        </div>
+      </nav>
+
       <section aria-labelledby="digest-glance" className="border-y border-neutral-200 py-8">
         <p id="digest-glance" className="text-xs font-semibold uppercase text-neutral-500">
           This week at a glance
