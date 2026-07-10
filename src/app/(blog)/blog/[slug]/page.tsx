@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { features } from "@/config/features";
 import { getAllBlogPosts, getBlogPost, getRelatedBlogPosts } from "@/features/blog/blog-utils";
+import { AuthorBio } from "@/features/blog/components/AuthorBio";
 import { BlogFaq, type BlogFaqItem } from "@/features/blog/components/BlogFaq";
 import { BlogShareActions } from "@/features/blog/components/BlogShareActions";
 import { MarkdownRenderer } from "@/features/blog/components/MarkdownRenderer";
@@ -263,6 +264,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <MarkdownRenderer content={post.content} />
           )}
 
+          <AuthorBio author={post.author} />
           <BlogFaq items={faqItems} />
           <RelatedPosts posts={relatedPosts} />
 

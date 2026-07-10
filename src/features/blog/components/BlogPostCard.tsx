@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, CalendarDays } from "lucide-react";
+import { slugifyBlogTaxonomy } from "@/features/blog/blog-utils";
 import type { BlogPost } from "@/features/blog/types";
 import { routes } from "@/lib/routes";
 
@@ -17,9 +18,12 @@ export function BlogPostCard({ post, featured = false }: BlogPostCardProps) {
     >
       <div>
         <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
-          <span className="rounded-md bg-sky-50 px-3 py-1 font-semibold text-sky-800">
+          <Link
+            href={routes.blogCategory(slugifyBlogTaxonomy(post.category))}
+            className="rounded-md bg-sky-50 px-3 py-1 font-semibold text-sky-800 hover:bg-sky-100"
+          >
             {post.category}
-          </span>
+          </Link>
           <span className="inline-flex items-center gap-1.5">
             <CalendarDays size={15} aria-hidden="true" />
             {new Intl.DateTimeFormat("en", {
@@ -40,12 +44,13 @@ export function BlogPostCard({ post, featured = false }: BlogPostCardProps) {
         <p className="mt-4 leading-7 text-neutral-650">{post.description}</p>
         <div className="mt-5 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span
+            <Link
               key={tag}
+              href={routes.blogTag(slugifyBlogTaxonomy(tag))}
               className="rounded-md border border-neutral-200 px-2.5 py-1 text-xs font-medium text-neutral-600"
             >
               {tag}
-            </span>
+            </Link>
           ))}
         </div>
       </div>

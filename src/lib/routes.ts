@@ -7,6 +7,9 @@ export const routes = {
   work: "/work",
   roadmap: "/roadmap",
   contact: "/contact",
+  about: "/about",
+  privacy: "/privacy",
+  rss: "/rss.xml",
   product: (slug: string) => `/products/${slug}`,
   productDownload: (slug: string) => `/products/${slug}/download`,
   productGuide: (slug: string) => `/products/${slug}/guide`,
@@ -14,5 +17,8 @@ export const routes = {
   productReleases: (slug: string) => `/products/${slug}/releases`,
   tool: (slug: string) => `/tools/${slug}`,
   blogPost: (slug: string) => `/blog/${slug}`,
+  blogCategory: (slug: string) => `/blog/category/${slug}`,
+  blogTag: (slug: string) => `/blog/tag/${slug}`,
+  blogSearch: "/blog/search",
   service: (slug: string) => `/services/${slug}`,
 };

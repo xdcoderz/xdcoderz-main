@@ -6,6 +6,15 @@ const blogDirectory = path.join(process.cwd(), "src", "content", "blog");
 const postFilePattern = /\.(md|mdx)$/;
 const digestFilePattern = /\.json$/;
 
+export function slugifyBlogTaxonomy(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function parseList(value: string | undefined) {
   if (!value) {
     return [];
@@ -192,4 +201,38 @@ export function getFeaturedBlogPosts() {
 
 export function getBlogCategories() {
   return Array.from(new Set(getAllBlogPosts().map((post) => post.category)));
+}
+
+export function getBlogTags() {
+  return Array.from(new Set(getAllBlogPosts().flatMap((post) => post.tags))).sort((a, b) =>
+    a.localeCompare(b),
+  );
+}
+
+export function getBlogCategoryBySlug(slug: string) {
+  return getBlogCategories().find((category) => slugifyBlogTaxonomy(category) === slug);
+}
+
+export function getBlogTagBySlug(slug: string) {
+  return getBlogTags().find((tag) => slugifyBlogTaxonomy(tag) === slug);
+}
+
+export function getBlogPostsByCategorySlug(slug: string) {
+  const category = getBlogCategoryBySlug(slug);
+
+  if (!category) {
+    return [];
+  }
+
+  return getAllBlogPosts().filter((post) => post.category === category);
+}
+
+export function getBlogPostsByTagSlug(slug: string) {
+  const tag = getBlogTagBySlug(slug);
+
+  if (!tag) {
+    return [];
+  }
+
+  return getAllBlogPosts().filter((post) => post.tags.includes(tag));
 }

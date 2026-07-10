@@ -27,9 +27,12 @@ export function Footer() {
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.tools}>Tools</Link>
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.services}>Services</Link>
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.work}>Work</Link>
+            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.about}>About</Link>
             {features.blog && <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.blog}>Blog</Link>}
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.roadmap}>Roadmap</Link>
             <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.contact}>Contact</Link>
+            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.privacy}>Privacy</Link>
+            {features.blog && <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.rss}>RSS</Link>}
           </div>
         </div>
         <div>

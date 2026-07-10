@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { features } from "@/config/features";
 import { products } from "@/data/products";
 import { services } from "@/data/services";
-import { getAllBlogPosts } from "@/features/blog/blog-utils";
+import { getAllBlogPosts, getBlogCategories, getBlogTags, slugifyBlogTaxonomy } from "@/features/blog/blog-utils";
 import { tools } from "@/features/tools";
 import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
@@ -16,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     routes.work,
     routes.roadmap,
     routes.contact,
+    routes.about,
+    routes.privacy,
     ...(features.blog ? [routes.blog] : []),
   ];
   const productRoutes = products.flatMap((product) => {
@@ -34,8 +36,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const serviceRoutes = services.map((service) => routes.service(service.slug));
   const toolRoutes = tools.map((tool) => routes.tool(tool.slug));
   const blogRoutes = features.blog ? getAllBlogPosts() : [];
+  const blogArchiveRoutes = features.blog
+    ? [
+        routes.blogSearch,
+        routes.rss,
+        ...getBlogCategories().map((category) => routes.blogCategory(slugifyBlogTaxonomy(category))),
+        ...getBlogTags().map((tag) => routes.blogTag(slugifyBlogTaxonomy(tag))),
+      ]
+    : [];
 
-  const standardRoutes = [...staticRoutes, ...productRoutes, ...serviceRoutes, ...toolRoutes].map((route) => ({
+  const standardRoutes = [...staticRoutes, ...productRoutes, ...serviceRoutes, ...toolRoutes, ...blogArchiveRoutes].map((route) => ({
     url: `${site.url}${route}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
