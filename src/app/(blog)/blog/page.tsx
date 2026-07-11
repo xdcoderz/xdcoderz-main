@@ -74,6 +74,12 @@ export default function BlogPage() {
         </div>
       </section>
 
+      <section className="journal-subscribe journal-subscribe--front">
+        <div>
+          <SubscriberCta source="blog-home" />
+        </div>
+      </section>
+
       <section className="journal-archive">
         <div className="journal-container">
           <div className="journal-section-heading">
@@ -116,12 +122,6 @@ export default function BlogPage() {
               <BlogPostCard key={post.slug} post={post} variant="row" />
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="journal-subscribe">
-        <div>
-          <SubscriberCta />
         </div>
       </section>
     </>

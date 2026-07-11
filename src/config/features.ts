@@ -1,7 +1,7 @@
 export const features = {
   blog: true,
   subscribers: {
-    enabled: false,
-    provider: "none",
+    enabled: true,
+    provider: "env",
   },
 } as const;

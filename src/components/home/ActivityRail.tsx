@@ -28,7 +28,7 @@ const activityItems = [
     tone: "peach",
   },
   {
-    status: "In preview",
+    status: "Live diagnostic",
     title: "Workflow Audit",
     summary: "Identify the recurring operational friction worth replacing with a better system.",
     tags: ["Operations", "Automation"],

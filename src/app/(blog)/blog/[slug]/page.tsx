@@ -293,7 +293,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <section className="journal-subscribe">
         <div>
-          <SubscriberCta />
+          <SubscriberCta source="blog-post" slug={post.slug} />
         </div>
       </section>
     </article>

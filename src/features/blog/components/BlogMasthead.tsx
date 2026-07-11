@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Mail, Search } from "lucide-react";
 import { getBlogCategories, slugifyBlogTaxonomy } from "@/features/blog/blog-utils";
 import { routes } from "@/lib/routes";
 
@@ -11,10 +11,16 @@ export function BlogMasthead() {
       <div className="journal-container">
         <div className="journal-masthead__utility">
           <span>Technology / Business / Builder intelligence</span>
-          <Link href={routes.blogSearch} aria-label="Search XDCoderz Journal">
-            <Search size={15} aria-hidden="true" />
-            Search
-          </Link>
+          <div className="journal-masthead__actions">
+            <Link href={routes.blogSearch} aria-label="Search XDCoderz Journal">
+              <Search size={15} aria-hidden="true" />
+              Search
+            </Link>
+            <a href="#journal-subscribe">
+              <Mail size={15} aria-hidden="true" />
+              Get the Friday Brief
+            </a>
+          </div>
         </div>
 
         <Link href={routes.blog} className="journal-masthead__brand">
