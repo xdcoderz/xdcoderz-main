@@ -42,14 +42,10 @@ export function ProductExplorer({
               key={filter}
               type="button"
               onClick={() => setActiveFilter(filter)}
-              className={`inline-flex min-h-9 items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-semibold shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 ${
-                isActive
-                  ? "border-neutral-950 bg-neutral-950 text-white dark:border-sky-500 dark:bg-sky-600 dark:text-white"
-                  : "border-neutral-200 bg-white text-neutral-650 hover:border-sky-500 hover:bg-sky-50 hover:text-sky-700 dark:border-white/10 dark:bg-neutral-950 dark:text-neutral-300 dark:hover:border-sky-500 dark:hover:bg-sky-500/10 dark:hover:text-sky-200"
-              }`}
+              className={`product-filter ${isActive ? "product-filter--active" : ""}`}
             >
               {filter}
-              <span className={isActive ? "text-sky-300 dark:text-sky-100" : "text-neutral-400 dark:text-neutral-500"}>{count}</span>
+              <span>{count}</span>
             </button>
           );
         })}

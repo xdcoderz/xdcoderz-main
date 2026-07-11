@@ -1,146 +1,160 @@
 import type { Metadata } from "next";
-import { ArrowRight, BarChart3, Boxes, CircuitBoard, Workflow } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  CircleDot,
+} from "lucide-react";
+import { ActivityRail } from "@/components/home/ActivityRail";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductExplorer } from "@/components/product/ProductExplorer";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { features } from "@/config/features";
 import { latestProducts, products } from "@/data/products";
+import { services } from "@/data/services";
+import { getAllBlogPosts } from "@/features/blog/blog-utils";
 import { featuredTools, ToolCard } from "@/features/tools";
 import { routes } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Software Systems for Measurable Growth",
   description:
-    "XDCoderz builds focused products, automation systems, and digital platforms that turn operational friction into measurable business leverage.",
+    "XDCoderz builds focused products, automation, and custom software systems that turn operational friction into measurable business leverage.",
 };
 
-const operatingEdges = [
-  {
-    title: "Sharper execution",
-    description:
-      "Replace slow manual paths with systems that make work repeatable, visible, and easier to scale.",
-    icon: Workflow,
-  },
-  {
-    title: "Product-led leverage",
-    description:
-      "Build assets that keep creating value after the first engagement, not one-off digital expenses.",
-    icon: Boxes,
-  },
-  {
-    title: "Measured growth",
-    description:
-      "Prioritize software decisions around throughput, customer experience, and commercial impact.",
-    icon: BarChart3,
-  },
-];
-
-const capabilityChips = [
-  "Desktop applications",
-  "Android applications",
+const capabilities = [
+  "Desktop apps",
   "Web applications",
+  "Android apps",
   "SaaS products",
-  "Automation systems",
+  "Automation",
   "Business websites",
   "AI workflows",
   "Internal tools",
 ];
 
+const deliveryStages = [
+  {
+    number: "01",
+    label: "The constraint",
+    title: "Diagnose the friction worth removing.",
+    description:
+      "We identify where time, revenue, or execution quality is being lost and define the business result the software must create.",
+  },
+  {
+    number: "02",
+    label: "The decision",
+    title: "Shape the smallest system with strategic value.",
+    description:
+      "Scope follows commercial priority. Every workflow, integration, and interface must justify its place in the first release.",
+  },
+  {
+    number: "03",
+    label: "The build",
+    title: "Ship a focused, maintainable release.",
+    description:
+      "The product is built for real use, measured against the brief, and structured so the next iteration does not require a rebuild.",
+  },
+  {
+    number: "04",
+    label: "The leverage",
+    title: "Turn adoption into compounding advantage.",
+    description:
+      "Once the system is live, we use evidence from the workflow to prioritize improvements that increase speed, control, and capacity.",
+  },
+];
+
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
 export default function Home() {
   const featuredProducts = latestProducts.slice(0, 3);
+  const latestPost = features.blog ? getAllBlogPosts()[0] : undefined;
+  const featuredServices = services.slice(0, 4);
 
   return (
     <>
-      <section className="hero-surface border-b border-neutral-200 px-6 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div>
-            <p className="inline-flex items-center rounded-full border border-sky-200 bg-white/70 px-3 py-1.5 text-xs font-semibold uppercase text-sky-700 shadow-sm backdrop-blur dark:border-sky-400/20 dark:bg-white/[0.03] dark:text-sky-300">
-              Strategic software partner
-            </p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] text-neutral-950 sm:text-6xl lg:text-7xl dark:text-white">
-              Build the systems your growth depends on.
+      <section className="home-hero">
+        <div className="home-hero__grid">
+          <div className="home-hero__copy">
+            <p className="section-kicker">XDCoderz / Products + Custom Systems</p>
+            <h1>
+              Build the software your <span>next stage</span> depends on.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-650 sm:text-xl dark:text-neutral-300">
-              XDCoderz designs products, automation, and digital platforms that
-              reduce operational drag, sharpen execution, and convert technology
-              spend into durable business leverage.
+            <p className="home-hero__lead">
+              XDCoderz turns operational friction into focused products,
+              automation, and digital systems designed to increase speed,
+              control, and commercial capacity.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+
+            <div className="home-hero__actions">
               <ButtonLink href="#products">
                 Explore products
-                <ArrowRight size={16} aria-hidden="true" />
+                <ArrowRight size={17} aria-hidden="true" />
               </ButtonLink>
               <ButtonLink href={routes.contact} variant="secondary">
-                Discuss a system
-                <ArrowRight size={16} aria-hidden="true" />
+                Discuss a build
+                <ArrowUpRight size={17} aria-hidden="true" />
               </ButtonLink>
             </div>
+
+            <dl className="home-hero__proof">
+              <div>
+                <dt>Model</dt>
+                <dd>Products + custom systems</dd>
+              </div>
+              <div>
+                <dt>Priority</dt>
+                <dd>Operational and commercial value</dd>
+              </div>
+              <div>
+                <dt>Delivery</dt>
+                <dd>Focused, scalable releases</dd>
+              </div>
+            </dl>
           </div>
 
-          <div className="rounded-lg border border-neutral-200 bg-white/75 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/[0.03]">
-            <div className="flex items-center justify-between border-b border-neutral-200 pb-4 dark:border-white/10">
-              <div>
-                <p className="text-xs font-semibold uppercase text-sky-700 dark:text-sky-300">
-                  Operating model
-                </p>
-                <h2 className="mt-1 text-xl font-semibold text-neutral-950 dark:text-white">
-                  From friction to advantage
-                </h2>
-              </div>
-              <span className="grid size-10 place-items-center rounded-md bg-neutral-950 text-white dark:bg-sky-300 dark:text-neutral-950">
-                <CircuitBoard size={18} aria-hidden="true" />
+          <ActivityRail />
+        </div>
+
+        <div className="capability-strip" aria-label="XDCoderz capabilities">
+          <div className="capability-strip__inner">
+            {capabilities.map((capability) => (
+              <span key={capability}>
+                <CircleDot size={12} aria-hidden="true" />
+                {capability}
               </span>
-            </div>
-            <div className="mt-5 grid gap-3">
-              {operatingEdges.map((edge) => {
-                const Icon = edge.icon;
-                return (
-                  <div
-                    key={edge.title}
-                    className="rounded-md border border-neutral-200 bg-neutral-50 p-4 dark:border-white/10 dark:bg-white/[0.03]"
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="grid size-9 shrink-0 place-items-center rounded-md bg-sky-100 text-sky-700 dark:bg-sky-300/10 dark:text-sky-300">
-                        <Icon size={17} aria-hidden="true" />
-                      </span>
-                      <div>
-                        <h3 className="font-semibold text-neutral-950 dark:text-white">
-                          {edge.title}
-                        </h3>
-                        <p className="mt-1 text-sm leading-6 text-neutral-650 dark:text-neutral-300">
-                          {edge.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="products" className="scroll-mt-20 bg-white px-6 py-16 sm:py-24 dark:bg-neutral-950">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-300">
-                Latest products
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold text-neutral-950 sm:text-5xl dark:text-white">
-                Focused releases built around real business pressure.
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-650 dark:text-neutral-300">
-                Each product starts with a costly bottleneck and ends with a
-                cleaner workflow your team can use immediately.
-              </p>
+      <section id="products" className="home-section home-section--surface">
+        <div className="home-container">
+          <div className="section-heading section-heading--split">
+            <div>
+              <p className="section-kicker">Available now / Latest products</p>
+              <h2>Software that earns its place in the workflow.</h2>
             </div>
-            <ButtonLink href={routes.products} variant="ghost" className="self-start md:self-auto">
-              View all products
-              <ArrowRight size={16} aria-hidden="true" />
-            </ButtonLink>
+            <div>
+              <p>
+                Every XDCoderz product starts with a costly bottleneck and is
+                built around a clearer, faster route to the result.
+              </p>
+              <ButtonLink href={routes.products} variant="ghost">
+                View all products
+                <ArrowRight size={16} aria-hidden="true" />
+              </ButtonLink>
+            </div>
           </div>
 
-          <div className="grid gap-6">
+          <div className="home-product-stack">
             {featuredProducts.map((product, index) => (
               <ProductCard key={product.slug} product={product} featured={index === 0} />
             ))}
@@ -148,58 +162,66 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="categories" className="scroll-mt-20 border-y border-neutral-200 bg-neutral-50 px-6 py-16 sm:py-24 dark:border-white/10 dark:bg-neutral-900">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-9 max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-300">
-              Capability map
+      <section id="categories" className="home-section home-section--muted">
+        <div className="home-container">
+          <div className="section-heading section-heading--compact">
+            <p className="section-kicker">Product categories</p>
+            <h2>Find the right operating surface.</h2>
+            <p>
+              Browse products by platform while the catalog expands across
+              desktop, mobile, web, SaaS, and automation.
             </p>
-            <h2 className="mt-3 text-3xl font-semibold text-neutral-950 sm:text-4xl dark:text-white">
-              Build across the surfaces where your business creates value.
-            </h2>
-            <p className="mt-4 text-base leading-7 text-neutral-650 dark:text-neutral-300">
-              Products, platforms, and services are organized by the outcomes
-              they create, so the catalog can scale without becoming messy.
-            </p>
-          </div>
-          <div className="mb-8 flex flex-wrap gap-2">
-            {capabilityChips.map((chip) => (
-              <span
-                key={chip}
-                className="rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 dark:border-white/10 dark:bg-white/[0.03] dark:text-neutral-300"
-              >
-                {chip}
-              </span>
-            ))}
           </div>
           <ProductExplorer products={products} showCatalogLink />
         </div>
       </section>
 
-      <section id="tools" className="scroll-mt-20 bg-white px-6 py-16 sm:py-24 dark:bg-neutral-950">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-300">
-                Business tools
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold text-neutral-950 sm:text-4xl dark:text-white">
-                Small utilities that create bigger software conversations.
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-650 dark:text-neutral-300">
-                Start with focused tools for planning, audits, and idea
-                generation. Each one is isolated as its own module, so the best
-                performers can grow into larger applications without disturbing
-                the core site.
-              </p>
-            </div>
-            <ButtonLink href={routes.tools} variant="ghost" className="self-start md:self-auto">
-              Explore all tools
-              <ArrowRight size={16} aria-hidden="true" />
-            </ButtonLink>
+      <section id="approach" className="delivery-section">
+        <div className="home-container">
+          <div className="delivery-section__intro">
+            <p className="section-kicker">How XDCoderz builds</p>
+            <h2>From business constraint to operating advantage.</h2>
+            <p>
+              The process stays commercially grounded from the first decision
+              to the first measurable result.
+            </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="delivery-list">
+            {deliveryStages.map((stage) => (
+              <article key={stage.number} className="delivery-step">
+                <div className="delivery-step__number">{stage.number}</div>
+                <div className="delivery-step__label">{stage.label}</div>
+                <div>
+                  <h3>{stage.title}</h3>
+                  <p>{stage.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" className="home-section home-section--surface">
+        <div className="home-container">
+          <div className="section-heading section-heading--split">
+            <div>
+              <p className="section-kicker">Business tools / Open access</p>
+              <h2>Useful decisions before the larger investment.</h2>
+            </div>
+            <div>
+              <p>
+                Use focused planning and diagnostic tools to clarify budget,
+                expose workflow friction, and pressure-test the opportunity.
+              </p>
+              <ButtonLink href={routes.tools} variant="ghost">
+                Explore all tools
+                <ArrowRight size={16} aria-hidden="true" />
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="home-tool-grid">
             {featuredTools.map((tool) => (
               <ToolCard key={tool.slug} tool={tool} compact />
             ))}
@@ -207,25 +229,109 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-6 py-16 sm:py-20 dark:bg-neutral-950">
-        <div className="mx-auto grid max-w-6xl gap-8 border-y border-neutral-200 py-12 lg:grid-cols-[1fr_auto] lg:items-center dark:border-white/10">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-300">
-              Services
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold text-neutral-950 sm:text-4xl dark:text-white">
-              When a standard product is not enough, build the operating edge.
-            </h2>
-            <p className="mt-4 max-w-2xl leading-7 text-neutral-650 dark:text-neutral-300">
-              Bring the constraint. XDCoderz will translate it into a focused
-              website, app, automation, or software system designed around the
-              return it needs to create.
-            </p>
+      {latestPost && (
+        <section className="market-section">
+          <div className="home-container market-section__grid">
+            <div>
+              <p className="section-kicker">Market intelligence / Weekly</p>
+              <h2>Signals are only valuable when they improve a decision.</h2>
+              <p>
+                XDCoderz filters major technology and market shifts through a
+                builder&apos;s lens, then turns the strongest signals into practical
+                software opportunities.
+              </p>
+              <div className="market-section__actions">
+                <ButtonLink href={routes.blog}>
+                  Read the analysis
+                  <ArrowRight size={16} aria-hidden="true" />
+                </ButtonLink>
+                <ButtonLink href={routes.tool("project-ideas-generator")} variant="secondary">
+                  Generate project ideas
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </ButtonLink>
+              </div>
+            </div>
+
+            <Link href={routes.blogPost(latestPost.slug)} className="market-brief">
+              <div className="market-brief__meta">
+                <span>{latestPost.category}</span>
+                <span>{formatDate(latestPost.date)}</span>
+              </div>
+              <h3>{latestPost.title}</h3>
+              <p>{latestPost.description}</p>
+              <span className="market-brief__link">
+                Open the latest brief
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </span>
+            </Link>
           </div>
-          <ButtonLink href={routes.services} className="self-start lg:self-auto">
-            Explore services
-            <ArrowRight size={16} aria-hidden="true" />
-          </ButtonLink>
+        </section>
+      )}
+
+      <section id="services" className="home-section home-section--muted">
+        <div className="home-container">
+          <div className="section-heading section-heading--split">
+            <div>
+              <p className="section-kicker">Custom software services</p>
+              <h2>When the advantage is specific, the system should be too.</h2>
+            </div>
+            <div>
+              <p>
+                Commission a website, application, automation, or internal
+                platform around the operating result your business needs next.
+              </p>
+              <ButtonLink href={routes.services} variant="ghost">
+                View all services
+                <ArrowRight size={16} aria-hidden="true" />
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="service-index">
+            {featuredServices.map((service, index) => (
+              <Link
+                key={service.slug}
+                href={routes.service(service.slug)}
+                className="service-index__item"
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{service.name}</h3>
+                  <p>{service.summary}</p>
+                </div>
+                <ArrowUpRight size={20} aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="decision-section">
+        <div className="home-container decision-section__grid">
+          <div>
+            <p className="section-kicker">Choose the next move</p>
+            <h2>Start with a product. Or build the capability you cannot buy.</h2>
+          </div>
+          <div className="decision-section__options">
+            <Link href={routes.products} className="decision-link">
+              <span>
+                <small>Explore</small>
+                Ready-to-use software
+              </span>
+              <ArrowRight size={22} aria-hidden="true" />
+            </Link>
+            <Link href={routes.contact} className="decision-link">
+              <span>
+                <small>Commission</small>
+                A focused custom system
+              </span>
+              <ArrowRight size={22} aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="decision-section__assurance">
+            <Check size={17} aria-hidden="true" />
+            Clear scope, maintainable foundations, and a business case for every release.
+          </div>
         </div>
       </section>
     </>

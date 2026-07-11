@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { features } from "@/config/features";
 import { products } from "@/data/products";
 import { services } from "@/data/services";
@@ -7,58 +8,66 @@ import { site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-200 bg-white px-6 py-12 text-neutral-950 dark:border-white/10 dark:bg-neutral-950 dark:text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div>
-          <div className="flex items-center gap-3 font-bold">
-            <span className="grid size-8 place-items-center rounded-md bg-neutral-950 font-mono text-sm text-white transition hover:-translate-y-0.5 hover:bg-sky-700 dark:bg-white dark:text-neutral-950 dark:hover:bg-sky-300">
-              XD
-            </span>
-            XDCoderz
+    <footer className="site-footer">
+      <div className="site-footer__inner">
+        <div className="site-footer__cta">
+          <div>
+            <p className="section-kicker">The next operating advantage</p>
+            <h2>Build the system your next stage demands.</h2>
           </div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-neutral-650 dark:text-neutral-300">
-            {site.tagline}
-          </p>
+          <Link href={routes.contact} className="footer-cta-link">
+            Start the conversation
+            <ArrowRight size={20} aria-hidden="true" />
+          </Link>
         </div>
-        <div>
-          <h2 className="text-sm font-semibold">Company</h2>
-          <div className="mt-4 grid gap-3 text-sm text-neutral-650 dark:text-neutral-300">
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.products}>Products</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.tools}>Tools</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.services}>Services</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.work}>Work</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.about}>About</Link>
-            {features.blog && <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.blog}>Blog</Link>}
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.roadmap}>Roadmap</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.contact}>Contact</Link>
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.privacy}>Privacy</Link>
-            {features.blog && <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.rss}>RSS</Link>}
+
+        <div className="site-footer__grid">
+          <div className="site-footer__brand">
+            <Link href={routes.home} className="brand-link">
+              <span className="brand-mark">XD</span>
+              XDCoderz
+            </Link>
+            <p>{site.tagline}</p>
+            <a href={`mailto:${site.email}`}>
+              {site.email}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
           </div>
-        </div>
-        <div>
-          <h2 className="text-sm font-semibold">Products</h2>
-          <div className="mt-4 grid gap-3 text-sm text-neutral-650 dark:text-neutral-300">
+
+          <div className="footer-column">
+            <h3>Explore</h3>
+            <Link href={routes.products}>Products</Link>
+            <Link href={routes.tools}>Tools</Link>
+            <Link href={routes.services}>Services</Link>
+            <Link href={routes.work}>Work</Link>
+            {features.blog && <Link href={routes.blog}>Blog</Link>}
+          </div>
+
+          <div className="footer-column">
+            <h3>Products</h3>
             {products.map((product) => (
-              <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" key={product.slug} href={routes.product(product.slug)}>
+              <Link key={product.slug} href={routes.product(product.slug)}>
                 {product.name}
               </Link>
             ))}
+            <Link href={routes.roadmap}>Product roadmap</Link>
+            <Link href={routes.tools}>Open business tools</Link>
+          </div>
+
+          <div className="footer-column">
+            <h3>Company</h3>
+            <Link href={routes.about}>About</Link>
+            <Link href={routes.contact}>Contact</Link>
+            <Link href={routes.privacy}>Privacy</Link>
+            {features.blog && <Link href={routes.rss}>RSS feed</Link>}
+            <Link href={routes.service(services[0].slug)}>Website development</Link>
           </div>
         </div>
-        <div>
-          <h2 className="text-sm font-semibold">Services</h2>
-          <div className="mt-4 grid gap-3 text-sm text-neutral-650 dark:text-neutral-300">
-            {services.slice(0, 6).map((service) => (
-              <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" key={service.slug} href={routes.service(service.slug)}>
-                {service.name}
-              </Link>
-            ))}
-            <Link className="transition hover:translate-x-1 hover:text-sky-700 dark:hover:text-sky-200" href={routes.services}>All services</Link>
-          </div>
+
+        <div className="site-footer__base">
+          <span>&copy; {new Date().getFullYear()} XDCoderz.</span>
+          <span>Products, tools, and custom systems built for real operating leverage.</span>
         </div>
-      </div>
-      <div className="mx-auto mt-10 max-w-6xl border-t border-neutral-200 pt-6 text-sm text-neutral-500 dark:border-white/10 dark:text-neutral-400">
-        &copy; {new Date().getFullYear()} XDCoderz. All rights reserved.
       </div>
     </footer>
   );

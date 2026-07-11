@@ -4,8 +4,8 @@ import type { WorkItem } from "@/data/work";
 
 export function WorkCard({ item }: { item: WorkItem }) {
   return (
-    <article className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-sky-700">
+    <article className="content-card">
+      <p className="content-card__kicker">
         {item.label}
       </p>
       <h3 className="mt-4 text-2xl font-semibold text-neutral-950">{item.title}</h3>

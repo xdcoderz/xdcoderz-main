@@ -20,10 +20,10 @@ export function ToolCard({ tool, compact = false }: ToolCardProps) {
   return (
     <Link
       href={routes.tool(tool.slug)}
-      className="group flex h-full flex-col rounded-lg border border-neutral-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-sky-300 hover:shadow-md hover:shadow-sky-950/10 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-sky-400/50"
+      className="tool-card-shell group"
     >
       <div className="flex items-start justify-between gap-4">
-        <span className="grid size-11 shrink-0 place-items-center rounded-md bg-sky-100 text-sky-700 transition group-hover:bg-sky-700 group-hover:text-white dark:bg-sky-300/10 dark:text-sky-300 dark:group-hover:bg-sky-300 dark:group-hover:text-neutral-950">
+        <span className="tool-card-icon">
           <Icon size={20} aria-hidden="true" />
         </span>
         <span
@@ -34,7 +34,7 @@ export function ToolCard({ tool, compact = false }: ToolCardProps) {
       </div>
 
       <div className="mt-5 flex flex-1 flex-col">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
+        <p className="tool-card-kicker text-xs font-semibold uppercase">
           {tool.category}
         </p>
         <h3 className="mt-2 text-xl font-semibold text-neutral-950 dark:text-white">
@@ -56,11 +56,10 @@ export function ToolCard({ tool, compact = false }: ToolCardProps) {
         ))}
       </div>
 
-      <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-neutral-950 transition group-hover:text-sky-700 dark:text-white dark:group-hover:text-sky-200">
+      <span className="tool-card-action">
         {tool.ctaLabel}
         <ArrowRight size={15} aria-hidden="true" className="transition group-hover:translate-x-1" />
       </span>
     </Link>
   );
 }
-
