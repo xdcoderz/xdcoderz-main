@@ -18,6 +18,7 @@ const reasons = [
   "Workflow automation",
   "GridForge support",
   "Feature request or product idea",
+  "Website feedback",
 ];
 
 export default function ContactPage() {
@@ -46,8 +47,8 @@ export default function ContactPage() {
             </span>
             <h2 className="mt-5 text-2xl font-semibold">Email</h2>
             <p className="mt-3 text-neutral-650">
-              Use this for now while the contact form is wired to a production
-              backend.
+              Use this inbox for project enquiries, product support, feature
+              requests, partnerships, and feedback about XDCoderz.
             </p>
             <a
               href={`mailto:${site.email}`}
