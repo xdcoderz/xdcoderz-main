@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { features } from "@/config/features";
 import {
   getAllBlogPosts,
@@ -274,19 +274,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <AuthorBio author={post.author} />
             <BlogFaq items={faqItems} />
             <RelatedPosts posts={relatedPosts} />
-
-            <section className="article-cta">
-              <p className="journal-section-label">Build the advantage</p>
-              <h2>Have a workflow that should not still be manual?</h2>
-              <p>
-                XDCoderz can turn that bottleneck into a focused product, app, or automation that gives
-                time back to the business.
-              </p>
-              <Link href={routes.contact}>
-                Start a conversation
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            </section>
           </div>
         </div>
       </div>
