@@ -52,17 +52,15 @@ export default async function BlogTagPage({ params }: BlogTagPageProps) {
   const posts = getBlogPostsByTagSlug(tagSlug);
 
   return (
-    <main className="px-6 py-14 sm:py-18">
-      <div className="mx-auto max-w-5xl">
-        <p className="text-sm font-semibold uppercase text-sky-700">Tag</p>
-        <h1 className="mt-3 text-4xl font-semibold text-neutral-950 sm:text-5xl">#{tag}</h1>
-        <p className="mt-5 max-w-2xl leading-8 text-neutral-650">
-          A compact archive for this topic.
-        </p>
-        <div className="mt-10">
-          <BlogArchiveList posts={posts} emptyMessage="No posts are published with this tag yet." />
-        </div>
+    <section className="journal-page">
+      <div className="journal-page__inner">
+        <header className="journal-page-header">
+          <p className="journal-section-label">Topic</p>
+          <h1>#{tag}</h1>
+          <p>Every XDCoderz Journal story connected to this topic.</p>
+        </header>
+        <BlogArchiveList posts={posts} emptyMessage="No posts are published with this tag yet." />
       </div>
-    </main>
+    </section>
   );
 }

@@ -35,16 +35,26 @@ export async function GET(_request: Request, { params }: OgRouteContext) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#f7f9fc",
-          color: "#101827",
+          background: "#f7f8f4",
+          color: "#171a17",
           padding: "72px",
-          border: "1px solid #dbe3ee",
-          fontFamily: "Arial",
+          border: "14px solid #e8ebe6",
+          fontFamily: "Georgia",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "32px" }}>
-          <div style={{ fontSize: 30, fontWeight: 700, color: "#075985" }}>{site.name}</div>
-          <div style={{ fontSize: 24, color: "#526071" }}>{category}</div>
+          <div style={{ fontSize: 34, fontWeight: 500 }}>XDCoderz Journal</div>
+          <div
+            style={{
+              fontFamily: "Arial",
+              fontSize: 19,
+              fontWeight: 700,
+              color: "#285744",
+              textTransform: "uppercase",
+            }}
+          >
+            {category}
+          </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -55,7 +65,7 @@ export async function GET(_request: Request, { params }: OgRouteContext) {
               fontSize: title.length > 72 ? 58 : 68,
               lineHeight: 1.05,
               letterSpacing: 0,
-              fontWeight: 800,
+              fontWeight: 500,
             }}
           >
             {title}
@@ -64,9 +74,9 @@ export async function GET(_request: Request, { params }: OgRouteContext) {
             style={{
               margin: 0,
               maxWidth: "880px",
-              fontSize: 30,
-              lineHeight: 1.35,
-              color: "#334155",
+              fontSize: 28,
+              lineHeight: 1.4,
+              color: "#394139",
             }}
           >
             {description}
@@ -78,10 +88,11 @@ export async function GET(_request: Request, { params }: OgRouteContext) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            borderTop: "1px solid #dbe3ee",
+            borderTop: "1px solid #b9c0b6",
             paddingTop: "28px",
-            fontSize: 24,
-            color: "#526071",
+            fontFamily: "Arial",
+            fontSize: 20,
+            color: "#5d665d",
           }}
         >
           <span>{site.tagline}</span>

@@ -53,100 +53,67 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
 
   return (
     <div className="digest-layout">
-      <nav
-        aria-label="Weekly digest table of contents"
-        className="sticky top-0 z-20 -mx-6 border-b border-neutral-200 bg-white/95 px-6 py-3 backdrop-blur"
-      >
-        <div className="flex items-center gap-3 overflow-x-auto text-sm">
-          <a
-            href="#digest-glance"
-            className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900"
-          >
-            Overview
-          </a>
-          <span aria-hidden="true" className="shrink-0 text-neutral-300">
+      <nav aria-label="Weekly digest table of contents" className="digest-nav">
+        <div className="digest-nav__inner">
+          <a href="#digest-glance">Overview</a>
+          <span aria-hidden="true" className="digest-nav__divider">
             /
           </span>
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="digest-nav__numbers">
             {digest.events.map((event, index) => (
-              <a
-                key={event.id}
-                href={`#story-${event.id}`}
-                title={event.headline}
-                className="inline-flex h-8 w-8 items-center justify-center border border-neutral-200 font-semibold text-neutral-600 hover:border-sky-300 hover:text-sky-900"
-              >
+              <a key={event.id} href={`#story-${event.id}`} title={event.headline}>
                 {storyNumber(index)}
               </a>
             ))}
           </div>
-          <span aria-hidden="true" className="shrink-0 text-neutral-300">
+          <span aria-hidden="true" className="digest-nav__divider">
             /
           </span>
-          <a
-            href="#opportunity-index"
-            className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900"
-          >
-            Opportunities
-          </a>
-          <a href="#faq" className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900">
-            FAQ
-          </a>
-          <a href="#methodology" className="shrink-0 font-semibold text-neutral-700 hover:text-sky-900">
-            Methodology
-          </a>
+          <a href="#opportunity-index">Opportunities</a>
+          <a href="#faq">FAQ</a>
+          <a href="#methodology">Methodology</a>
         </div>
       </nav>
 
-      <section aria-labelledby="digest-glance" className="border-y border-neutral-200 py-8">
-        <p id="digest-glance" className="text-xs font-semibold uppercase text-neutral-500">
+      <section id="digest-glance" aria-labelledby="digest-glance-title" className="digest-glance">
+        <p id="digest-glance-title" className="digest-section-label">
           This week at a glance
         </p>
-        <dl className="mt-6 grid gap-6 text-sm sm:grid-cols-3">
+        <dl>
           <div>
-            <dt className="font-semibold text-neutral-950">Sectors in motion</dt>
-            <dd className="mt-2 leading-6 text-neutral-600">{sectors.join(" · ")}</dd>
+            <dt>Sectors in motion</dt>
+            <dd>{sectors.join(" / ")}</dd>
           </div>
           <div>
-            <dt className="font-semibold text-neutral-950">Impact horizon</dt>
-            <dd className="mt-2 leading-6 text-neutral-600">{horizons.join(" · ")}</dd>
+            <dt>Impact horizon</dt>
+            <dd>{horizons.join(" / ")}</dd>
           </div>
           <div>
-            <dt className="font-semibold text-neutral-950">Primary forces</dt>
-            <dd className="mt-2 leading-6 text-neutral-600">{drivers.join(" · ")}</dd>
+            <dt>Primary forces</dt>
+            <dd>{drivers.join(" / ")}</dd>
           </div>
         </dl>
       </section>
 
       <section aria-label="Ranked market events">
         {digest.events.map((event, index) => (
-          <article
-            key={event.id}
-            id={`story-${event.id}`}
-            className="scroll-mt-24 border-b border-neutral-200 py-12 sm:py-16"
-          >
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-start">
+          <article key={event.id} id={`story-${event.id}`} className="digest-story">
+            <div className="digest-story__lead">
               <div>
-                <p className="digest-editorial text-xl text-neutral-400">{storyNumber(index)}</p>
-                <h2 className="mt-3 text-2xl font-semibold text-neutral-950 sm:text-3xl">
-                  {event.headline}
-                </h2>
-                <p className="mt-5 max-w-3xl text-base leading-7 text-neutral-700 sm:text-lg sm:leading-8">
-                  {event.description}
-                </p>
-
-                <p className="mt-5 text-sm leading-6 text-neutral-500">
-                  {event.impactArea} · {labels[event.timeHorizon]} · {labels[event.impactDuration]} ·{" "}
+                <p className="digest-story__number">{storyNumber(index)}</p>
+                <h2>{event.headline}</h2>
+                <p className="digest-story__description">{event.description}</p>
+                <p className="digest-story__signals">
+                  {event.impactArea} / {labels[event.timeHorizon]} / {labels[event.impactDuration]} /{" "}
                   {labels[event.primaryDriver]}
                 </p>
 
-                <div className="mt-5 grid gap-3 text-sm leading-6 text-neutral-700">
+                <div className="digest-story__context">
                   <p>
-                    <strong className="font-semibold text-neutral-950">India relevance:</strong>{" "}
-                    {event.indiaRelevance}
+                    <strong>India relevance:</strong> {event.indiaRelevance}
                   </p>
                   <p>
-                    <strong className="font-semibold text-neutral-950">Hits first:</strong>{" "}
-                    {event.hitsFirst}
+                    <strong>Hits first:</strong> {event.hitsFirst}
                   </p>
                 </div>
 
@@ -154,7 +121,7 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
                   href={event.source.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-sky-800 hover:text-sky-950"
+                  className="digest-source-link"
                 >
                   Read original reporting at {event.source.name}
                   <ArrowUpRight size={15} aria-hidden="true" />
@@ -167,32 +134,26 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
                   alt={event.source.imageAlt}
                   sourceName={event.source.name}
                 />
-                <figcaption className="mt-2 text-xs leading-5 text-neutral-500">
-                  Image and reporting: {event.source.name}
-                </figcaption>
+                <figcaption>Image and reporting: {event.source.name}</figcaption>
               </figure>
             </div>
 
-            <section aria-labelledby={`analysis-${event.id}`} className="mt-9 bg-neutral-50 px-5 py-6 sm:px-7">
-              <h3 id={`analysis-${event.id}`} className="text-sm font-semibold uppercase text-neutral-600">
+            <section aria-labelledby={`analysis-${event.id}`} className="digest-analysis">
+              <h3 id={`analysis-${event.id}`} className="digest-section-label">
                 Business summary
               </h3>
-              <ul className="mt-5 grid gap-4 text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7">
+              <ul className="digest-analysis__list">
                 <li>
-                  <strong className="font-semibold text-neutral-950">Bottom line.</strong>{" "}
-                  {event.analysis.bottomLine}
+                  <strong>Bottom line.</strong> {event.analysis.bottomLine}
                 </li>
                 <li>
-                  <strong className="font-semibold text-neutral-950">Commercial impact.</strong>{" "}
-                  {event.analysis.commercialImpact}
+                  <strong>Commercial impact.</strong> {event.analysis.commercialImpact}
                 </li>
                 <li>
-                  <strong className="font-semibold text-neutral-950">Winners and pressure.</strong>{" "}
-                  {event.analysis.winnersAndPressure}
+                  <strong>Winners and pressure.</strong> {event.analysis.winnersAndPressure}
                 </li>
                 <li>
-                  <strong className="font-semibold text-neutral-950">Watch next.</strong>{" "}
-                  {event.analysis.watchNext}
+                  <strong>Watch next.</strong> {event.analysis.watchNext}
                 </li>
               </ul>
             </section>
@@ -200,38 +161,37 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
             <section
               id={`opportunity-${event.id}`}
               aria-labelledby={`opportunity-title-${event.id}`}
-              className="scroll-mt-24 border-x border-b border-neutral-200 px-5 py-6 sm:px-7"
+              className="digest-opportunity"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex min-w-0 items-center gap-2 text-neutral-500">
+              <div className="digest-opportunity__header">
+                <div className="digest-opportunity__label">
                   <Lightbulb size={17} strokeWidth={1.7} aria-hidden="true" />
-                  <p className="text-xs font-semibold uppercase">Builder opportunity</p>
+                  <p className="digest-section-label">Builder opportunity</p>
                 </div>
                 <OpportunityCopyButton text={buildOpportunityCopy(event)} />
               </div>
-              <h3 id={`opportunity-title-${event.id}`} className="mt-3 text-xl font-semibold text-neutral-950">
-                {event.opportunity.name}
-              </h3>
-              <p className="mt-3 leading-7 text-neutral-700">
-                For <strong className="font-semibold text-neutral-950">{event.opportunity.targetCustomer}</strong>,{" "}
-                {event.opportunity.solution.charAt(0).toLowerCase() + event.opportunity.solution.slice(1)}
+              <h3 id={`opportunity-title-${event.id}`}>{event.opportunity.name}</h3>
+              <p className="digest-opportunity__pitch">
+                For <strong>{event.opportunity.targetCustomer}</strong>,{" "}
+                {event.opportunity.solution.charAt(0).toLowerCase() +
+                  event.opportunity.solution.slice(1)}
               </p>
-              <dl className="mt-6 grid gap-x-8 gap-y-5 text-sm sm:grid-cols-2">
+              <dl>
                 <div>
-                  <dt className="font-semibold text-neutral-950">Problem</dt>
-                  <dd className="mt-1.5 leading-6 text-neutral-600">{event.opportunity.problem}</dd>
+                  <dt>Problem</dt>
+                  <dd>{event.opportunity.problem}</dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-neutral-950">Weekend MVP</dt>
-                  <dd className="mt-1.5 leading-6 text-neutral-600">{event.opportunity.weekendMvp}</dd>
+                  <dt>Weekend MVP</dt>
+                  <dd>{event.opportunity.weekendMvp}</dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-neutral-950">Why now</dt>
-                  <dd className="mt-1.5 leading-6 text-neutral-600">{event.opportunity.whyNow}</dd>
+                  <dt>Why now</dt>
+                  <dd>{event.opportunity.whyNow}</dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-neutral-950">First validation</dt>
-                  <dd className="mt-1.5 leading-6 text-neutral-600">{event.opportunity.validation}</dd>
+                  <dt>First validation</dt>
+                  <dd>{event.opportunity.validation}</dd>
                 </div>
               </dl>
             </section>
@@ -240,37 +200,36 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
       </section>
 
       {digest.closingSynthesis ? (
-        <blockquote className="digest-editorial border-b border-neutral-200 py-12 text-2xl leading-10 text-neutral-800 sm:text-3xl sm:leading-12">
-          {digest.closingSynthesis}
-        </blockquote>
+        <blockquote className="digest-closing">{digest.closingSynthesis}</blockquote>
       ) : null}
 
-      <section aria-labelledby="opportunity-index" className="border-b border-neutral-200 py-12">
-        <p className="text-xs font-semibold uppercase text-neutral-500">Opportunity index</p>
-        <h2 id="opportunity-index" className="mt-3 text-2xl font-semibold text-neutral-950 sm:text-3xl">
-          {digest.events.length}{" "}ideas this week&apos;s news points to
+      <section
+        id="opportunity-index"
+        aria-labelledby="opportunity-index-title"
+        className="digest-opportunity-index"
+      >
+        <p className="digest-section-label">Opportunity index</p>
+        <h2 id="opportunity-index-title">
+          {digest.events.length} ideas this week&apos;s news points to
         </h2>
-        <ol className="mt-8 grid gap-x-10 sm:grid-cols-2">
+        <ol>
           {digest.events.map((event, index) => (
-            <li key={event.id} className="border-t border-neutral-200 py-4">
-              <a
-                href={`#opportunity-${event.id}`}
-                className="grid grid-cols-[2rem_1fr] gap-3 text-sm text-neutral-700 hover:text-sky-900"
-              >
-                <span className="digest-editorial text-neutral-400">{storyNumber(index)}</span>
-                <span className="font-semibold">{event.opportunity.name}</span>
+            <li key={event.id}>
+              <a href={`#opportunity-${event.id}`}>
+                <span className="digest-opportunity-index__number">{storyNumber(index)}</span>
+                <span>{event.opportunity.name}</span>
               </a>
             </li>
           ))}
         </ol>
       </section>
 
-      <section aria-labelledby="methodology" className="py-10 text-sm leading-6 text-neutral-600">
-        <h2 id="methodology" className="font-semibold text-neutral-950">Methodology</h2>
-        <p className="mt-3 max-w-3xl">
-          Stories are ranked for global significance, concrete India impact, recency, and commercial usefulness.
-          The coverage window runs from {digest.coverage.start} through {digest.coverage.end} in India Standard Time.
-          Fewer stories are published when the quality threshold is not met.
+      <section id="methodology" aria-labelledby="methodology-title" className="digest-methodology">
+        <h2 id="methodology-title">Methodology</h2>
+        <p>
+          Stories are ranked for global significance, concrete India impact, recency, and commercial
+          usefulness. The coverage window runs from {digest.coverage.start} through {digest.coverage.end} in
+          India Standard Time. Fewer stories are published when the quality threshold is not met.
         </p>
       </section>
     </div>

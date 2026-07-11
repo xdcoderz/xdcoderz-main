@@ -30,19 +30,15 @@ export default function BlogSearchPage() {
   }));
 
   return (
-    <main className="px-6 py-14 sm:py-18">
-      <div className="mx-auto max-w-3xl">
-        <p className="text-sm font-semibold uppercase text-sky-700">Blog search</p>
-        <h1 className="mt-3 text-4xl font-semibold text-neutral-950 sm:text-5xl">
-          Find the useful part faster.
-        </h1>
-        <p className="mt-5 leading-8 text-neutral-650">
-          Search titles, descriptions, categories, and tags without leaving the blog archive.
-        </p>
-        <div className="mt-8">
-          <BlogSearch posts={posts} />
-        </div>
+    <section className="journal-page">
+      <div className="journal-page__inner journal-page__inner--narrow">
+        <header className="journal-page-header">
+          <p className="journal-section-label">Journal search</p>
+          <h1>Find the useful part faster.</h1>
+          <p>Search every headline, description, category, and topic in the XDCoderz Journal.</p>
+        </header>
+        <BlogSearch posts={posts} />
       </div>
-    </main>
+    </section>
   );
 }

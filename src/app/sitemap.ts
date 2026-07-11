@@ -39,7 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogArchiveRoutes = features.blog
     ? [
         routes.blogSearch,
-        routes.rss,
         ...getBlogCategories().map((category) => routes.blogCategory(slugifyBlogTaxonomy(category))),
         ...getBlogTags().map((tag) => routes.blogTag(slugifyBlogTaxonomy(tag))),
       ]

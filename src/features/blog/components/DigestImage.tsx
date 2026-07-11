@@ -16,7 +16,7 @@ export function DigestImage({ src, alt, sourceName }: DigestImageProps) {
 
   if (!src || failed) {
     return (
-      <div className="flex aspect-video items-center justify-center border border-neutral-200 bg-neutral-100 px-6 text-center text-sm font-semibold text-neutral-500">
+      <div className="digest-image digest-image--fallback">
         {sourceName}
       </div>
     );
@@ -30,7 +30,7 @@ export function DigestImage({ src, alt, sourceName }: DigestImageProps) {
       decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
-      className="aspect-video w-full border border-neutral-200 bg-neutral-100 object-cover"
+      className="digest-image"
     />
   );
 }

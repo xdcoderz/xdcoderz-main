@@ -37,7 +37,7 @@ export function OpportunityCopyButton({ text }: OpportunityCopyButtonProps) {
       onClick={copyOpportunity}
       title={label}
       aria-label={label}
-      className="inline-flex h-9 w-9 shrink-0 items-center justify-center border border-neutral-200 bg-white text-neutral-500 transition hover:border-neutral-300 hover:text-neutral-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+      className="opportunity-copy-button"
     >
       {isCopied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
       <span className="sr-only" aria-live="polite">

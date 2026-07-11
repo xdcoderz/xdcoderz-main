@@ -13,24 +13,26 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
   }
 
   return (
-    <section aria-labelledby="related-posts" className="mt-14 border-t border-neutral-200 pt-12">
-      <p className="text-xs font-semibold uppercase text-neutral-500">Read next</p>
-      <h2 id="related-posts" className="mt-3 text-2xl font-semibold text-neutral-950 sm:text-3xl">
+    <section aria-labelledby="related-posts" className="article-related">
+      <p className="journal-section-label">Read next</p>
+      <h2 id="related-posts">
         Related posts
       </h2>
-      <div className="mt-7 grid gap-4 md:grid-cols-3">
+      <div className="article-related__list">
         {posts.map((post) => (
-          <article key={post.slug} className="border border-neutral-200 bg-white p-5">
-            <p className="text-xs font-semibold uppercase text-neutral-500">{post.category}</p>
-            <h3 className="mt-3 text-lg font-semibold leading-7 text-neutral-950">
-              <Link href={routes.blogPost(post.slug)}>{post.title}</Link>
-            </h3>
-            <p className="mt-3 line-clamp-3 text-sm leading-6 text-neutral-650">{post.description}</p>
+          <article key={post.slug} className="article-related__item">
+            <div>
+              <p className="journal-section-label">{post.category}</p>
+              <h3>
+                <Link href={routes.blogPost(post.slug)}>{post.title}</Link>
+              </h3>
+            </div>
             <Link
               href={routes.blogPost(post.slug)}
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sky-800 hover:text-sky-950"
+              className="article-related__link"
+              aria-label={`Read ${post.title}`}
             >
-              Read next
+              Read
               <ArrowUpRight size={15} aria-hidden="true" />
             </Link>
           </article>

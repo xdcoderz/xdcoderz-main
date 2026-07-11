@@ -29,32 +29,27 @@ export function BlogSearch({ posts }: BlogSearchProps) {
   }, [normalizedQuery, posts]);
 
   return (
-    <section aria-label="Search blog posts">
-      <div className="relative">
-        <Search
-          size={18}
-          aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
-        />
+    <section aria-label="Search blog posts" className="journal-search">
+      <div className="journal-search__field">
+        <Search size={18} aria-hidden="true" />
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           type="search"
           placeholder="Search posts, tags, and topics"
-          className="min-h-12 w-full border border-neutral-200 bg-white pl-11 pr-4 text-base text-neutral-950 outline-none transition placeholder:text-neutral-400 focus:border-sky-700"
+          aria-label="Search posts, tags, and topics"
         />
       </div>
 
-      <p className="mt-4 text-sm text-neutral-500">
+      <p className="journal-search__count" aria-live="polite">
         {results.length} {results.length === 1 ? "post" : "posts"} found
       </p>
 
-      <div className="mt-7 grid gap-4">
+      <div className="journal-search__results">
         {results.map((post) => (
-          <article key={post.slug} className="border border-neutral-200 bg-white p-5">
-            <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase text-neutral-500">
+          <article key={post.slug} className="journal-search-result">
+            <div className="story-card__meta">
               <span>{post.category}</span>
-              <span aria-hidden="true">/</span>
               <time dateTime={post.date}>
                 {new Intl.DateTimeFormat("en", {
                   month: "short",
@@ -62,13 +57,12 @@ export function BlogSearch({ posts }: BlogSearchProps) {
                   year: "numeric",
                 }).format(new Date(post.date))}
               </time>
-              <span aria-hidden="true">/</span>
               <span>{post.readingTime}</span>
             </div>
-            <h2 className="mt-3 text-xl font-semibold text-neutral-950">
+            <h2>
               <Link href={routes.blogPost(post.slug)}>{post.title}</Link>
             </h2>
-            <p className="mt-2 leading-7 text-neutral-650">{post.description}</p>
+            <p>{post.description}</p>
           </article>
         ))}
       </div>

@@ -8,17 +8,13 @@ type BlogArchiveListProps = {
 
 export function BlogArchiveList({ emptyMessage, posts }: BlogArchiveListProps) {
   if (posts.length === 0) {
-    return (
-      <div className="border border-neutral-200 bg-white p-6 text-sm leading-6 text-neutral-650">
-        {emptyMessage}
-      </div>
-    );
+    return <div className="journal-empty-state">{emptyMessage}</div>;
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="journal-archive-list">
       {posts.map((post) => (
-        <BlogPostCard key={post.slug} post={post} />
+        <BlogPostCard key={post.slug} post={post} variant="row" />
       ))}
     </div>
   );

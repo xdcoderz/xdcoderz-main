@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ButtonLink } from "@/components/ui/ButtonLink";
 import { features } from "@/config/features";
-import { getAllBlogPosts, getBlogPost, getRelatedBlogPosts } from "@/features/blog/blog-utils";
+import {
+  getAllBlogPosts,
+  getBlogPost,
+  getRelatedBlogPosts,
+  slugifyBlogTaxonomy,
+} from "@/features/blog/blog-utils";
 import { AuthorBio } from "@/features/blog/components/AuthorBio";
 import { BlogFaq, type BlogFaqItem } from "@/features/blog/components/BlogFaq";
 import { BlogShareActions } from "@/features/blog/components/BlogShareActions";
@@ -206,34 +211,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <article>
+    <article className="journal-article">
       <ReadingProgressBar />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd, faqJsonLd]) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd, faqJsonLd]),
+        }}
       />
-      <header className="border-b border-neutral-200 bg-neutral-50 px-6 py-14 sm:py-18">
-        <div className={`mx-auto ${isDigest ? "max-w-5xl" : "max-w-3xl"}`}>
-          <ButtonLink href={routes.blog} variant="ghost" className="-ml-5 mb-8">
+
+      <header className="article-header">
+        <div className="article-header__inner">
+          <Link href={routes.blog} className="article-back-link">
             <ArrowLeft size={16} aria-hidden="true" />
             Back to blog
-          </ButtonLink>
-          <p className="text-sm font-semibold uppercase text-neutral-500">
-            {isDigest ? `Weekly market digest · ${post.date}` : post.category}
+          </Link>
+          <p className="article-kicker">
+            {isDigest ? `Weekly market digest / ${post.date}` : post.category}
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-semibold text-neutral-950 sm:text-5xl">
-            {post.title}
-          </h1>
-          <p
-            className={`mt-5 max-w-3xl text-lg leading-8 text-neutral-650 ${
-              isDigest ? "digest-editorial text-xl sm:text-2xl" : ""
-            }`}
-          >
+          <h1>{post.title}</h1>
+          <p className="article-header__deck">
             {digest ? digest.subtitle : post.description}
           </p>
-          <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium text-neutral-600">
+          <div className="article-header__meta">
             <span>{post.author}</span>
-            <span aria-hidden="true">/</span>
             <time dateTime={post.date}>
               {new Intl.DateTimeFormat("en", {
                 month: "long",
@@ -241,54 +242,57 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 year: "numeric",
               }).format(new Date(post.date))}
             </time>
-            <span aria-hidden="true">/</span>
             <span>{post.readingTime}</span>
-            {digest ? (
-              <>
-                <span aria-hidden="true">/</span>
-                <span>{digest.events.length} ranked events</span>
-              </>
-            ) : null}
+            {digest ? <span>{digest.events.length} ranked events</span> : null}
           </div>
-          <div className="mt-7">
+          <nav aria-label="Article topics" className="article-header__tags">
+            {post.tags.map((tag) => (
+              <Link key={tag} href={routes.blogTag(slugifyBlogTaxonomy(tag))}>
+                #{tag}
+              </Link>
+            ))}
+          </nav>
+          <div className="article-share">
             <BlogShareActions title={post.title} url={postUrl} />
           </div>
         </div>
       </header>
 
-      <div className="px-6 py-12 sm:py-16">
-        <div className={`mx-auto ${isDigest ? "max-w-5xl" : "max-w-3xl"}`}>
+      <div className="article-content">
+        <div
+          className={`article-content__inner ${
+            isDigest ? "article-content__inner--digest" : ""
+          }`}
+        >
           {digest ? (
             <WeeklyDigestRenderer digest={digest} />
           ) : (
             <MarkdownRenderer content={post.content} />
           )}
 
-          <AuthorBio author={post.author} />
-          <BlogFaq items={faqItems} />
-          <RelatedPosts posts={relatedPosts} />
+          <div className="article-afterword">
+            <AuthorBio author={post.author} />
+            <BlogFaq items={faqItems} />
+            <RelatedPosts posts={relatedPosts} />
 
-          <div className="mt-14 border border-neutral-200 bg-neutral-50 p-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
-              Build the advantage
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-neutral-950">
-              Have a workflow that should not still be manual?
-            </h2>
-            <p className="mt-3 leading-7 text-neutral-650">
-              XDCoderz can turn that bottleneck into a focused product, app, or
-              automation that gives time back to the business.
-            </p>
-            <ButtonLink href={routes.contact} className="mt-5">
-              Start a conversation
-              <ArrowRight size={16} aria-hidden="true" />
-            </ButtonLink>
+            <section className="article-cta">
+              <p className="journal-section-label">Build the advantage</p>
+              <h2>Have a workflow that should not still be manual?</h2>
+              <p>
+                XDCoderz can turn that bottleneck into a focused product, app, or automation that gives
+                time back to the business.
+              </p>
+              <Link href={routes.contact}>
+                Start a conversation
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </section>
           </div>
         </div>
       </div>
 
-      <section className="border-t border-neutral-200 bg-white px-6 py-14">
-        <div className="mx-auto max-w-3xl">
+      <section className="journal-subscribe">
+        <div>
           <SubscriberCta />
         </div>
       </section>

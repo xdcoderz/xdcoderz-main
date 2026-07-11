@@ -54,17 +54,15 @@ export default async function BlogCategoryPage({ params }: BlogCategoryPageProps
   const posts = getBlogPostsByCategorySlug(categorySlug);
 
   return (
-    <main className="px-6 py-14 sm:py-18">
-      <div className="mx-auto max-w-5xl">
-        <p className="text-sm font-semibold uppercase text-sky-700">Category</p>
-        <h1 className="mt-3 text-4xl font-semibold text-neutral-950 sm:text-5xl">{category}</h1>
-        <p className="mt-5 max-w-2xl leading-8 text-neutral-650">
-          A focused archive of XDCoderz posts in this category.
-        </p>
-        <div className="mt-10">
-          <BlogArchiveList posts={posts} emptyMessage="No posts are published in this category yet." />
-        </div>
+    <section className="journal-page">
+      <div className="journal-page__inner">
+        <header className="journal-page-header">
+          <p className="journal-section-label">Category</p>
+          <h1>{category}</h1>
+          <p>A focused archive of XDCoderz reporting and analysis in this category.</p>
+        </header>
+        <BlogArchiveList posts={posts} emptyMessage="No posts are published in this category yet." />
       </div>
-    </main>
+    </section>
   );
 }

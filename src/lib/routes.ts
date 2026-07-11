@@ -9,7 +9,6 @@ export const routes = {
   contact: "/contact",
   about: "/about",
   privacy: "/privacy",
-  rss: "/rss.xml",
   product: (slug: string) => `/products/${slug}`,
   productDownload: (slug: string) => `/products/${slug}/download`,
   productGuide: (slug: string) => `/products/${slug}/guide`,

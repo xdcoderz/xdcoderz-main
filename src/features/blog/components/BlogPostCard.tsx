@@ -1,62 +1,58 @@
 import Link from "next/link";
-import { ArrowUpRight, CalendarDays } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { slugifyBlogTaxonomy } from "@/features/blog/blog-utils";
 import type { BlogPost } from "@/features/blog/types";
 import { routes } from "@/lib/routes";
+import { BlogCoverImage } from "./BlogCoverImage";
 
 type BlogPostCardProps = {
   post: BlogPost;
-  featured?: boolean;
+  variant?: "lead" | "secondary" | "row";
 };
 
-export function BlogPostCard({ post, featured = false }: BlogPostCardProps) {
+export function BlogPostCard({ post, variant = "row" }: BlogPostCardProps) {
+  const postUrl = routes.blogPost(post.slug);
+  const fallbackImage = `/api/og/blog/${post.slug}`;
+
   return (
-    <article
-      className={`group rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-700/40 hover:shadow-md ${
-        featured ? "md:grid md:grid-cols-[1fr_auto] md:gap-8" : ""
-      }`}
-    >
-      <div>
-        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
+    <article className={`story-card story-card--${variant}`}>
+      <Link href={postUrl} className="story-card__image-link" tabIndex={-1} aria-hidden="true">
+        <BlogCoverImage
+          src={post.coverImage}
+          fallbackSrc={fallbackImage}
+          alt=""
+          className="story-card__image"
+        />
+      </Link>
+
+      <div className="story-card__content">
+        <div className="story-card__meta">
           <Link
             href={routes.blogCategory(slugifyBlogTaxonomy(post.category))}
-            className="rounded-md bg-sky-50 px-3 py-1 font-semibold text-sky-800 hover:bg-sky-100"
+            className="story-card__category"
           >
             {post.category}
           </Link>
-          <span className="inline-flex items-center gap-1.5">
-            <CalendarDays size={15} aria-hidden="true" />
+          <time dateTime={post.date}>
             {new Intl.DateTimeFormat("en", {
               month: "short",
               day: "numeric",
               year: "numeric",
             }).format(new Date(post.date))}
-          </span>
+          </time>
           <span>{post.readingTime}</span>
         </div>
-        <h2
-          className={`mt-5 font-semibold tracking-tight text-neutral-950 ${
-            featured ? "text-3xl sm:text-4xl" : "text-2xl"
-          }`}
-        >
-          <Link href={routes.blogPost(post.slug)}>{post.title}</Link>
+
+        <h2 className="story-card__title">
+          <Link href={postUrl}>{post.title}</Link>
         </h2>
-        <p className="mt-4 leading-7 text-neutral-650">{post.description}</p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {post.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={routes.blogTag(slugifyBlogTaxonomy(tag))}
-              className="rounded-md border border-neutral-200 px-2.5 py-1 text-xs font-medium text-neutral-600"
-            >
-              {tag}
-            </Link>
-          ))}
-        </div>
+        <p className="story-card__summary">{post.description}</p>
       </div>
+
       <Link
-        href={routes.blogPost(post.slug)}
-        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 group-hover:text-sky-950 md:self-end"
+        href={postUrl}
+        className="story-card__read"
+        aria-label={`Read ${post.title}`}
       >
         Read article
         <ArrowUpRight size={16} aria-hidden="true" />
