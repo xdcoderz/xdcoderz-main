@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { features } from "@/config/features";
+import { getBlogCategories, slugifyBlogTaxonomy } from "@/features/blog/blog-utils";
 import { routes } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
@@ -15,6 +16,8 @@ const navItems = [
 ];
 
 export function Header() {
+  const blogCategories = features.blog ? getBlogCategories() : [];
+
   return (
     <>
       <Link href={routes.tool("software-cost-estimator")} className="announcement-bar">
@@ -29,11 +32,31 @@ export function Header() {
             XDCoderz
           </Link>
           <nav className="site-nav">
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="site-nav__link">
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) =>
+              item.href === routes.blog ? (
+                <div key={item.href} className="site-nav__item site-nav__item--dropdown">
+                  <Link href={item.href} className="site-nav__link site-nav__link--dropdown">
+                    {item.label}
+                    <ChevronDown size={13} aria-hidden="true" />
+                  </Link>
+                  <div className="site-nav__dropdown" aria-label="Blog categories">
+                    <Link href={routes.blog}>All posts</Link>
+                    {blogCategories.map((category) => (
+                      <Link
+                        key={category}
+                        href={routes.blogCategory(slugifyBlogTaxonomy(category))}
+                      >
+                        {category}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link key={item.href} href={item.href} className="site-nav__link">
+                  {item.label}
+                </Link>
+              ),
+            )}
           </nav>
           <div className="site-header__actions">
             <Link href={routes.contact} className="header-cta">

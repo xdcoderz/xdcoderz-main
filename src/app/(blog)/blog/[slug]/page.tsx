@@ -258,7 +258,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </header>
 
-      <div className="article-content">
+      <div className={`article-content ${isDigest ? "article-content--digest" : ""}`}>
         <div
           className={`article-content__inner ${
             isDigest ? "article-content__inner--digest" : ""

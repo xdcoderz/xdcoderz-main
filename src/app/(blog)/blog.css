@@ -793,6 +793,10 @@
   padding: 54px 0 76px;
 }
 
+.article-content--digest {
+  padding-top: 0;
+}
+
 .article-content__inner {
   width: min(100% - 48px, 760px);
   margin-inline: auto;
@@ -1074,41 +1078,6 @@
 
 .digest-nav__divider {
   color: var(--journal-line-strong);
-}
-
-.digest-glance {
-  border-bottom: 1px solid var(--journal-line-strong);
-  padding: 35px 0 38px;
-}
-
-.digest-glance dl {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  margin: 22px 0 0;
-}
-
-.digest-glance dl > div {
-  min-width: 0;
-  padding-right: 28px;
-}
-
-.digest-glance dl > div + div {
-  border-left: 1px solid var(--journal-line);
-  padding-left: 28px;
-}
-
-.digest-glance dt {
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.digest-glance dd {
-  margin: 8px 0 0;
-  color: var(--journal-muted-strong);
-  font-family: var(--font-journal-text), Georgia, serif;
-  font-size: 15px;
-  line-height: 1.55;
 }
 
 .digest-story {
@@ -1559,21 +1528,10 @@
     padding-inline: 18px;
   }
 
-  .digest-glance dl,
   .digest-analysis__list,
   .digest-opportunity dl,
   .digest-opportunity-index ol {
     grid-template-columns: 1fr;
-  }
-
-  .digest-glance dl > div {
-    padding: 0 0 16px;
-  }
-
-  .digest-glance dl > div + div {
-    border-top: 1px solid var(--journal-line);
-    border-left: 0;
-    padding: 16px 0;
   }
 
   .digest-story {

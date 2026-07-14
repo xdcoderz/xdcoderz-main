@@ -28,10 +28,6 @@ function storyNumber(index: number) {
   return String(index + 1).padStart(2, "0");
 }
 
-function unique(values: string[]) {
-  return Array.from(new Set(values));
-}
-
 function buildOpportunityCopy(event: WeeklyMarketDigest["events"][number]) {
   return [
     `Builder opportunity: ${event.opportunity.name}`,
@@ -47,15 +43,13 @@ function buildOpportunityCopy(event: WeeklyMarketDigest["events"][number]) {
 }
 
 export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
-  const sectors = unique(digest.events.map((event) => event.impactArea)).slice(0, 4);
-  const horizons = unique(digest.events.map((event) => labels[event.timeHorizon]));
-  const drivers = unique(digest.events.map((event) => labels[event.primaryDriver]));
+  const firstStoryId = digest.events[0]?.id;
 
   return (
     <div className="digest-layout">
       <nav aria-label="Weekly digest table of contents" className="digest-nav">
         <div className="digest-nav__inner">
-          <a href="#digest-glance">Overview</a>
+          {firstStoryId ? <a href={`#story-${firstStoryId}`}>Overview</a> : null}
           <span aria-hidden="true" className="digest-nav__divider">
             /
           </span>
@@ -74,26 +68,6 @@ export function WeeklyDigestRenderer({ digest }: WeeklyDigestRendererProps) {
           <a href="#methodology">Methodology</a>
         </div>
       </nav>
-
-      <section id="digest-glance" aria-labelledby="digest-glance-title" className="digest-glance">
-        <p id="digest-glance-title" className="digest-section-label">
-          This week at a glance
-        </p>
-        <dl>
-          <div>
-            <dt>Sectors in motion</dt>
-            <dd>{sectors.join(" / ")}</dd>
-          </div>
-          <div>
-            <dt>Impact horizon</dt>
-            <dd>{horizons.join(" / ")}</dd>
-          </div>
-          <div>
-            <dt>Primary forces</dt>
-            <dd>{drivers.join(" / ")}</dd>
-          </div>
-        </dl>
-      </section>
 
       <section aria-label="Ranked market events">
         {digest.events.map((event, index) => (
