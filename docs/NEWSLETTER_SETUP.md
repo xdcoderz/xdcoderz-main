@@ -12,6 +12,7 @@ the backend keys stay server-side.
 - Email validation
 - Honeypot spam field
 - Light in-memory rate limit
+- Supabase subscriber storage when configured
 - Local JSONL capture with no external API
 - Provider adapters for Resend, Brevo, Buttondown, and Mailchimp
 
@@ -38,8 +39,8 @@ Resend is currently used for:
 - Friday Brief subscriber confirmation emails.
 - Friday Brief admin notification emails.
 
-Resend is not a subscriber database. Use Supabase next when subscriber records,
-preferences, and unsubscribes need durable storage.
+Resend is not a subscriber database. Supabase stores subscriber records,
+preferences, and future unsubscribe state when configured.
 
 Brevo is still a good option if you want an all-in-one newsletter list manager.
 
@@ -89,6 +90,7 @@ The newsletter form uses `/api/newsletter/subscribe` and sends:
 
 - A confirmation email to the subscriber.
 - A subscriber notification email to `CONTACT_REPLY_TO_EMAIL`.
+- A subscriber record to Supabase when the Supabase env vars are configured.
 
 ## Brevo setup
 

@@ -1,5 +1,6 @@
 import { mkdir, appendFile } from "node:fs/promises";
 import path from "node:path";
+import { saveNewsletterSubscriber } from "@/features/leads/storage";
 import {
   escapeHtml,
   getContactFromEmail,
@@ -66,6 +67,8 @@ export async function subscribeToNewsletter(
 ): Promise<ProviderResult> {
   const provider = getNewsletterProvider();
 
+  await persistNewsletterSubscriber(input);
+
   if (provider === "brevo") {
     await subscribeWithBrevo(input);
     return { provider, ok: true };
@@ -88,6 +91,18 @@ export async function subscribeToNewsletter(
 
   await subscribeLocally(input);
   return { provider, ok: true };
+}
+
+async function persistNewsletterSubscriber(input: NewsletterSubscriptionInput) {
+  try {
+    const result = await saveNewsletterSubscriber(input);
+
+    if (result.skipped) {
+      console.warn("Newsletter subscriber storage skipped", result.reason);
+    }
+  } catch (error) {
+    console.error("Newsletter subscriber storage failed", error);
+  }
 }
 
 async function subscribeLocally(input: NewsletterSubscriptionInput) {

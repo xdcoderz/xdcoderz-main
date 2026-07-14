@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { saveContactLead } from "@/features/leads/storage";
 import {
   escapeHtml,
   getContactFromEmail,
@@ -72,6 +73,15 @@ export async function POST(request: Request) {
   }
 
   try {
+    await persistContactLead({
+      name,
+      email,
+      reason,
+      message,
+      ip,
+      userAgent: request.headers.get("user-agent") ?? "not provided",
+    });
+
     await sendContactEmails({
       name,
       email,
@@ -164,6 +174,18 @@ async function sendContactEmails(input: ContactEmailInput) {
       "<p>XDCoderz</p>",
     ].join(""),
   });
+}
+
+async function persistContactLead(input: ContactEmailInput) {
+  try {
+    const result = await saveContactLead(input);
+
+    if (result.skipped) {
+      console.warn("Contact lead storage skipped", result.reason);
+    }
+  } catch (error) {
+    console.error("Contact lead storage failed", error);
+  }
 }
 
 function invalidRequest() {
