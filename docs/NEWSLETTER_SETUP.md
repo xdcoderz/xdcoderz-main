@@ -13,7 +13,7 @@ the backend keys stay server-side.
 - Honeypot spam field
 - Light in-memory rate limit
 - Local JSONL capture with no external API
-- Provider adapters for Brevo, Buttondown, and Mailchimp
+- Provider adapters for Resend, Brevo, Buttondown, and Mailchimp
 
 ## Default service email
 
@@ -21,13 +21,27 @@ Use this identity across newsletter and growth services:
 
 ```env
 XDCODERZ_SERVICE_EMAIL=grow.xdcoderz@gmail.com
-NEWSLETTER_FROM_EMAIL=grow.xdcoderz@gmail.com
+CONTACT_FROM_EMAIL="XDCoderz <hello@xdcoderz.xyz>"
+CONTACT_REPLY_TO_EMAIL=grow.xdcoderz@gmail.com
+NEWSLETTER_FROM_EMAIL="XDCoderz <hello@xdcoderz.xyz>"
 ```
 
 ## Recommended free provider
 
-Use Brevo first for production because its free tier is more useful for an early
-weekly newsletter than Mailchimp's current free limits.
+Use Resend first for production email delivery because the domain is already
+verified and the API key can live safely in Vercel environment variables.
+
+Resend is currently used for:
+
+- Contact form delivery to the XDCoderz growth inbox.
+- Contact form confirmation emails.
+- Friday Brief subscriber confirmation emails.
+- Friday Brief admin notification emails.
+
+Resend is not a subscriber database. Use Supabase next when subscriber records,
+preferences, and unsubscribes need durable storage.
+
+Brevo is still a good option if you want an all-in-one newsletter list manager.
 
 Buttondown is a good alternative if you want a simpler developer-style
 newsletter product.
@@ -50,6 +64,31 @@ data/newsletter-subscribers.jsonl
 ```
 
 That file is ignored by Git so subscriber emails do not get committed.
+
+## Resend setup
+
+```env
+NEWSLETTER_PROVIDER=resend
+RESEND_API_KEY=your_resend_api_key
+CONTACT_FROM_EMAIL="XDCoderz <hello@xdcoderz.xyz>"
+CONTACT_REPLY_TO_EMAIL=grow.xdcoderz@gmail.com
+NEWSLETTER_FROM_EMAIL="XDCoderz <hello@xdcoderz.xyz>"
+```
+
+In Vercel, enter the email display-name values without the surrounding quotes.
+
+If `NEWSLETTER_PROVIDER` is not set, the backend automatically uses Resend when
+`RESEND_API_KEY` is present.
+
+The contact form uses `/api/contact` and sends:
+
+- A lead email to `CONTACT_REPLY_TO_EMAIL`.
+- A confirmation email to the visitor.
+
+The newsletter form uses `/api/newsletter/subscribe` and sends:
+
+- A confirmation email to the subscriber.
+- A subscriber notification email to `CONTACT_REPLY_TO_EMAIL`.
 
 ## Brevo setup
 

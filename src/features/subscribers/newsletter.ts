@@ -1,8 +1,15 @@
 import { mkdir, appendFile } from "node:fs/promises";
 import path from "node:path";
+import {
+  escapeHtml,
+  getContactFromEmail,
+  getContactReplyToEmail,
+  sendResendEmail,
+} from "@/lib/email/resend";
 
 export type NewsletterProvider =
   | "local"
+  | "resend"
   | "brevo"
   | "buttondown"
   | "mailchimp";
@@ -22,6 +29,7 @@ type ProviderResult = {
 
 const providerNames = new Set<NewsletterProvider>([
   "local",
+  "resend",
   "brevo",
   "buttondown",
   "mailchimp",
@@ -36,6 +44,10 @@ export function getNewsletterProvider(): NewsletterProvider {
 
   if (process.env.BREVO_API_KEY) {
     return "brevo";
+  }
+
+  if (process.env.RESEND_API_KEY) {
+    return "resend";
   }
 
   if (process.env.BUTTONDOWN_API_KEY) {
@@ -56,6 +68,11 @@ export async function subscribeToNewsletter(
 
   if (provider === "brevo") {
     await subscribeWithBrevo(input);
+    return { provider, ok: true };
+  }
+
+  if (provider === "resend") {
+    await subscribeWithResend(input);
     return { provider, ok: true };
   }
 
@@ -112,6 +129,57 @@ async function subscribeWithBrevo(input: NewsletterSubscriptionInput) {
   });
 
   await assertProviderResponse(response, "Brevo");
+}
+
+async function subscribeWithResend(input: NewsletterSubscriptionInput) {
+  const safeEmail = escapeHtml(input.email);
+  const safeSource = escapeHtml(input.source);
+  const safeSlug = escapeHtml(input.slug ?? "not provided");
+  const safeIp = escapeHtml(input.ip ?? "not provided");
+  const safeUserAgent = escapeHtml(input.userAgent ?? "not provided");
+  const serviceEmail = getContactReplyToEmail();
+  const fromEmail = getContactFromEmail();
+
+  await sendResendEmail({
+    from: fromEmail,
+    to: input.email,
+    subject: "You are on the XDCoderz Friday Brief",
+    text: [
+      "You are on the XDCoderz Friday Brief.",
+      "",
+      "Every Friday, we send the few market and technology shifts that look worth building around.",
+      "",
+      "You can reply to this email if you want to discuss an idea with XDCoderz.",
+    ].join("\n"),
+    html: [
+      "<p>You are on the <strong>XDCoderz Friday Brief</strong>.</p>",
+      "<p>Every Friday, we send the few market and technology shifts that look worth building around.</p>",
+      "<p>You can reply to this email if you want to discuss an idea with XDCoderz.</p>",
+    ].join(""),
+  });
+
+  await sendResendEmail({
+    from: fromEmail,
+    to: serviceEmail,
+    subject: "New XDCoderz Friday Brief subscriber",
+    text: [
+      `Email: ${input.email}`,
+      `Source: ${input.source}`,
+      `Slug: ${input.slug ?? "not provided"}`,
+      `IP: ${input.ip ?? "not provided"}`,
+      `User agent: ${input.userAgent ?? "not provided"}`,
+    ].join("\n"),
+    html: [
+      "<h2>New Friday Brief subscriber</h2>",
+      "<ul>",
+      `<li><strong>Email:</strong> ${safeEmail}</li>`,
+      `<li><strong>Source:</strong> ${safeSource}</li>`,
+      `<li><strong>Slug:</strong> ${safeSlug}</li>`,
+      `<li><strong>IP:</strong> ${safeIp}</li>`,
+      `<li><strong>User agent:</strong> ${safeUserAgent}</li>`,
+      "</ul>",
+    ].join(""),
+  });
 }
 
 async function subscribeWithButtondown(input: NewsletterSubscriptionInput) {
