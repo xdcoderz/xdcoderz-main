@@ -2,6 +2,7 @@
 
 import { FormEvent, useId, useState } from "react";
 import { ArrowRight, Check, Mail } from "lucide-react";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 type SubscriberCtaProps = {
   source?: string;
@@ -42,6 +43,7 @@ export function SubscriberCta({
         body: JSON.stringify({
           email: formData.get("email"),
           website: formData.get("website"),
+          turnstileToken: formData.get("cf-turnstile-response"),
           source,
           slug,
         }),
@@ -123,6 +125,7 @@ export function SubscriberCta({
             autoComplete="off"
           />
         </label>
+        <TurnstileWidget className="subscriber-cta__turnstile" />
         <p className="subscriber-cta__fineprint">
           No spam. Only the signals that look worth building around.
         </p>

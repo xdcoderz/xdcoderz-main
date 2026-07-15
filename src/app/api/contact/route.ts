@@ -6,6 +6,7 @@ import {
   getContactReplyToEmail,
   sendResendEmail,
 } from "@/lib/email/resend";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -69,6 +70,32 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, message: "Too many messages. Give it a minute and try again." },
       { status: 429 },
+    );
+  }
+
+  let turnstileResult: Awaited<ReturnType<typeof verifyTurnstileToken>>;
+
+  try {
+    turnstileResult = await verifyTurnstileToken(
+      getString(payload.turnstileToken),
+      ip,
+    );
+  } catch (error) {
+    console.error("Turnstile verification failed", error);
+
+    return NextResponse.json(
+      {
+        ok: false,
+        message: "Verification is not available right now. Try again shortly.",
+      },
+      { status: 502 },
+    );
+  }
+
+  if (!turnstileResult.ok) {
+    return NextResponse.json(
+      { ok: false, message: turnstileResult.message },
+      { status: 403 },
     );
   }
 

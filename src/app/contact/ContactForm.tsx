@@ -2,6 +2,7 @@
 
 import { FormEvent, useId, useState } from "react";
 import { Check, Send } from "lucide-react";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 const reasons = [
   "Website development",
@@ -50,6 +51,7 @@ export function ContactForm() {
           reason: formData.get("reason"),
           message: formData.get("message"),
           website: formData.get("website"),
+          turnstileToken: formData.get("cf-turnstile-response"),
         }),
       });
       const result = (await response.json()) as {
@@ -201,6 +203,8 @@ export function ContactForm() {
           autoComplete="off"
         />
       </label>
+
+      <TurnstileWidget className="mt-5" />
 
       <button
         type="submit"
