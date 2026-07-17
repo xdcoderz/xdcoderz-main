@@ -11,8 +11,9 @@ import {
   Target,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { buildToolContactHref } from "@/features/leads/tool-attribution";
+import { trackToolEvent } from "@/features/tools/analytics/client";
 import {
   audienceOptions,
   defaultIdeaBrief,
@@ -33,15 +34,36 @@ export function ProjectIdeasGenerator() {
   const [brief, setBrief] = useState<IdeaBrief>(defaultIdeaBrief);
   const [ideas, setIdeas] = useState<GeneratedProjectIdea[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const startedRef = useRef(false);
   const complete = isIdeaBriefComplete(brief);
 
   function updateBrief<Key extends keyof IdeaBrief>(key: Key, value: IdeaBrief[Key]) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackToolEvent({
+        tool: "project-ideas-generator",
+        event: "tool_started",
+        metadata: { firstField: key },
+      });
+    }
+
     setBrief((current) => ({ ...current, [key]: value }));
   }
 
   function generateIdeas() {
     if (!isIdeaBriefComplete(brief)) return;
     setIdeas(generateProjectIdeas(brief));
+    trackToolEvent({
+      tool: "project-ideas-generator",
+      event: "tool_completed",
+      metadata: {
+        topic: brief.topic,
+        audience: brief.audience,
+        platform: brief.platform,
+        difficulty: brief.difficulty,
+        ideasGenerated: 10,
+      },
+    });
   }
 
   async function copyText(id: string, value: string) {
@@ -205,6 +227,18 @@ export function ProjectIdeasGenerator() {
                     copied={copiedId === idea.id}
                     onCopy={() => copyText(idea.id, formatIdeaForClipboard(idea))}
                     contactHref={buildIdeaContactHref(brief, idea)}
+                    onContactClick={() =>
+                      trackToolEvent({
+                        tool: "project-ideas-generator",
+                        event: "contact_clicked",
+                        metadata: {
+                          topic: brief.topic,
+                          ideaNumber: idea.number,
+                          ideaTitle: idea.title,
+                          platform: idea.platform,
+                        },
+                      })
+                    }
                   />
                 ))}
               </div>
@@ -297,11 +331,13 @@ function IdeaCard({
   copied,
   onCopy,
   contactHref,
+  onContactClick,
 }: {
   idea: GeneratedProjectIdea;
   copied: boolean;
   onCopy: () => void;
   contactHref: string;
+  onContactClick: () => void;
 }) {
   return (
     <article className="flex h-full flex-col rounded-lg border border-neutral-200 bg-neutral-50 p-5 transition hover:-translate-y-1 hover:border-sky-300 dark:border-white/10 dark:bg-white/[0.03]">
@@ -351,7 +387,11 @@ function IdeaCard({
       <div className="mt-auto grid gap-4 border-t border-neutral-200 pt-5 dark:border-white/10">
         <IdeaDetail label="Monetization" value={idea.monetization} />
         <IdeaDetail label="Validation test" value={idea.validation} />
-        <Link href={contactHref} className="button-link button-link--primary mt-1 w-full">
+        <Link
+          href={contactHref}
+          onClick={onContactClick}
+          className="button-link button-link--primary mt-1 w-full"
+        >
           Discuss this idea
           <ArrowRight size={16} aria-hidden="true" />
         </Link>

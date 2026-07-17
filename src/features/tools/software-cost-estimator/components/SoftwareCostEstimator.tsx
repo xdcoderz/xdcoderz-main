@@ -8,8 +8,9 @@ import {
   CheckCircle2,
   RefreshCcw,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { buildToolContactHref } from "@/features/leads/tool-attribution";
+import { trackToolEvent } from "@/features/tools/analytics/client";
 import { routes } from "@/lib/routes";
 import { getTool } from "../../data";
 import {
@@ -97,6 +98,7 @@ const wizardSteps: WizardStep[] = [
 export function SoftwareCostEstimator() {
   const [state, setState] = useState<EstimatorState>(defaultEstimatorState);
   const [activeStep, setActiveStep] = useState(0);
+  const startedRef = useRef(false);
 
   const estimate = useMemo(() => {
     if (!isEstimatorComplete(state)) {
@@ -149,6 +151,15 @@ export function SoftwareCostEstimator() {
     : routes.contact;
 
   function handleSelect(field: EstimatorField, value: string) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackToolEvent({
+        tool: "software-cost-estimator",
+        event: "tool_started",
+        metadata: { firstField: field },
+      });
+    }
+
     setState((current) => {
       switch (field) {
         case "projectType":
@@ -176,6 +187,17 @@ export function SoftwareCostEstimator() {
     }
 
     if (estimate) {
+      trackToolEvent({
+        tool: "software-cost-estimator",
+        event: "tool_completed",
+        metadata: {
+          projectType: state.projectType,
+          complexity: state.complexity,
+          estimateLow: estimate.low,
+          estimateHigh: estimate.high,
+          score: estimate.score,
+        },
+      });
       setActiveStep(wizardSteps.length);
     }
   }
@@ -302,6 +324,17 @@ export function SoftwareCostEstimator() {
                   estimate={estimate}
                   onBack={goPrevious}
                   onReset={resetEstimator}
+                  onContactClick={() =>
+                    trackToolEvent({
+                      tool: "software-cost-estimator",
+                      event: "contact_clicked",
+                      metadata: {
+                        projectType: state.projectType,
+                        estimateLow: estimate.low,
+                        estimateHigh: estimate.high,
+                      },
+                    })
+                  }
                 />
               ) : (
                 currentStep && (
@@ -497,6 +530,7 @@ type EstimateResultProps = {
   estimate: NonNullable<ReturnType<typeof calculateEstimate>>;
   onBack: () => void;
   onReset: () => void;
+  onContactClick: () => void;
 };
 
 function EstimateResult({
@@ -504,6 +538,7 @@ function EstimateResult({
   estimate,
   onBack,
   onReset,
+  onContactClick,
 }: EstimateResultProps) {
   return (
     <div className="rounded-lg border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-950">
@@ -554,6 +589,7 @@ function EstimateResult({
           </button>
           <Link
             href={contactHref}
+            onClick={onContactClick}
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:bg-sky-700 hover:shadow-md dark:bg-sky-300 dark:text-neutral-950 dark:hover:bg-sky-200"
           >
             Discuss this estimate

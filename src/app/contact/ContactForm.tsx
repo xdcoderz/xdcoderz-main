@@ -7,6 +7,7 @@ import {
   getToolAttributionLabel,
   type ToolAttribution,
 } from "@/features/leads/tool-attribution";
+import { getToolSessionId } from "@/features/tools/analytics/client";
 
 const reasons = [
   "Website development",
@@ -57,6 +58,7 @@ export function ContactForm({ attribution }: { attribution: ToolAttribution | nu
           website: formData.get("website"),
           turnstileToken: formData.get("cf-turnstile-response"),
           attribution,
+          sessionId: attribution ? getToolSessionId() : null,
         }),
       });
       const result = (await response.json()) as {

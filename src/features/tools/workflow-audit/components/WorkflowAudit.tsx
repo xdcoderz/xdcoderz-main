@@ -11,8 +11,9 @@ import {
   RefreshCcw,
   Workflow,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { buildToolContactHref } from "@/features/leads/tool-attribution";
+import { trackToolEvent } from "@/features/tools/analytics/client";
 import { routes } from "@/lib/routes";
 import { getTool } from "../../data";
 import {
@@ -82,6 +83,7 @@ const auditSteps: AuditStep[] = [
 export function WorkflowAudit() {
   const [state, setState] = useState<WorkflowAuditState>(defaultWorkflowAuditState);
   const [activeStep, setActiveStep] = useState(0);
+  const startedRef = useRef(false);
 
   const result = useMemo(
     () => (isWorkflowAuditComplete(state) ? calculateWorkflowAudit(state) : null),
@@ -128,6 +130,15 @@ export function WorkflowAudit() {
     : routes.contact;
 
   function selectOption(field: AuditField, value: string) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackToolEvent({
+        tool: "workflow-audit",
+        event: "tool_started",
+        metadata: { firstField: field },
+      });
+    }
+
     setState((current) => ({ ...current, [field]: value }) as WorkflowAuditState);
   }
 
@@ -139,7 +150,19 @@ export function WorkflowAudit() {
       return;
     }
 
-    if (result) setActiveStep(auditSteps.length);
+    if (result) {
+      trackToolEvent({
+        tool: "workflow-audit",
+        event: "tool_completed",
+        metadata: {
+          workflowType: state.workflowType,
+          score: result.score,
+          band: result.band,
+          recommendedSystem: result.recommendedSystem,
+        },
+      });
+      setActiveStep(auditSteps.length);
+    }
   }
 
   function resetAudit() {
@@ -218,6 +241,17 @@ export function WorkflowAudit() {
                 contactHref={contactHref}
                 onBack={() => setActiveStep(auditSteps.length - 1)}
                 onReset={resetAudit}
+                onContactClick={() =>
+                  trackToolEvent({
+                    tool: "workflow-audit",
+                    event: "contact_clicked",
+                    metadata: {
+                      score: result.score,
+                      band: result.band,
+                      recommendedSystem: result.recommendedSystem,
+                    },
+                  })
+                }
               />
             ) : (
               currentStep && (
@@ -370,11 +404,13 @@ function AuditResult({
   contactHref,
   onBack,
   onReset,
+  onContactClick,
 }: {
   result: ReturnType<typeof calculateWorkflowAudit>;
   contactHref: string;
   onBack: () => void;
   onReset: () => void;
+  onContactClick: () => void;
 }) {
   return (
     <div className="pt-6">
@@ -435,7 +471,11 @@ function AuditResult({
             <RefreshCcw size={15} aria-hidden="true" />
             Start over
           </button>
-          <Link href={contactHref} className="button-link button-link--primary">
+          <Link
+            href={contactHref}
+            onClick={onContactClick}
+            className="button-link button-link--primary"
+          >
             Discuss this workflow
             <ArrowRight size={16} aria-hidden="true" />
           </Link>

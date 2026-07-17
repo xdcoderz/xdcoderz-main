@@ -5,6 +5,8 @@ import {
   sanitizeToolAttribution,
   type ToolAttribution,
 } from "@/features/leads/tool-attribution";
+import { sanitizeToolEventInput } from "@/features/tools/analytics/events";
+import { saveToolEvent } from "@/features/tools/analytics/storage";
 import {
   escapeHtml,
   getContactFromEmail,
@@ -54,6 +56,14 @@ export async function POST(request: Request) {
   const reason = trimAndLimit(getString(payload.reason), MAX_REASON_LENGTH);
   const message = trimAndLimit(getString(payload.message), MAX_MESSAGE_LENGTH);
   const attribution = sanitizeToolAttribution(payload.attribution);
+  const contactSubmissionEvent = attribution
+    ? sanitizeToolEventInput({
+        sessionId: payload.sessionId,
+        tool: attribution.tool,
+        event: "contact_submitted",
+        metadata: { reason },
+      })
+    : null;
 
   if (!name || !reason || message.length < 20) {
     return NextResponse.json(
@@ -126,6 +136,8 @@ export async function POST(request: Request) {
       attribution,
     });
 
+    await persistContactSubmissionEvent(contactSubmissionEvent);
+
     return NextResponse.json({
       ok: true,
       message: "Message received. XDCoderz will reply from the growth inbox.",
@@ -140,6 +152,22 @@ export async function POST(request: Request) {
       },
       { status: 502 },
     );
+  }
+}
+
+async function persistContactSubmissionEvent(
+  event: NonNullable<ReturnType<typeof sanitizeToolEventInput>> | null,
+) {
+  if (!event) return;
+
+  try {
+    const result = await saveToolEvent(event);
+
+    if (result.skipped) {
+      console.warn("Contact submission event storage skipped", result.reason);
+    }
+  } catch (error) {
+    console.error("Contact submission event storage failed", error);
   }
 }
 

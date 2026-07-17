@@ -56,7 +56,11 @@ export function parseToolAttributionSearchParams(
 }
 
 export function sanitizeToolAttribution(value: unknown): ToolAttribution | null {
-  if (!isRecord(value) || value.source !== "tool" || !isToolSlug(value.tool)) {
+  if (
+    !isRecord(value) ||
+    value.source !== "tool" ||
+    !isToolAttributionSlug(value.tool)
+  ) {
     return null;
   }
 
@@ -123,7 +127,9 @@ function cleanString(value: unknown, maxLength: number) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
 
-function isToolSlug(value: unknown): value is ToolAttributionSlug {
+export function isToolAttributionSlug(
+  value: unknown,
+): value is ToolAttributionSlug {
   return (
     typeof value === "string" &&
     toolAttributionSlugs.some((slug) => slug === value)

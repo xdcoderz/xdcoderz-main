@@ -61,6 +61,38 @@ create index if not exists newsletter_subscribers_status_idx
 create index if not exists newsletter_subscribers_subscribed_at_idx
   on public.newsletter_subscribers (subscribed_at desc);
 
+create table if not exists public.tool_events (
+  id uuid primary key default gen_random_uuid(),
+  session_id uuid not null,
+  tool_slug text not null check (
+    tool_slug in (
+      'software-cost-estimator',
+      'workflow-audit',
+      'project-ideas-generator'
+    )
+  ),
+  event_name text not null check (
+    event_name in (
+      'tool_started',
+      'tool_completed',
+      'contact_clicked',
+      'contact_submitted'
+    )
+  ),
+  source_path text not null,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists tool_events_created_at_idx
+  on public.tool_events (created_at desc);
+
+create index if not exists tool_events_funnel_idx
+  on public.tool_events (tool_slug, event_name, created_at desc);
+
+create index if not exists tool_events_session_idx
+  on public.tool_events (session_id, created_at);
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -81,6 +113,7 @@ execute function public.set_updated_at();
 
 alter table public.contact_leads enable row level security;
 alter table public.newsletter_subscribers enable row level security;
+alter table public.tool_events enable row level security;
 ```
 
 There are no public read/write policies on these tables. The website writes
@@ -94,12 +127,16 @@ through server routes using `SUPABASE_SERVICE_ROLE_KEY`, which can bypass RLS.
   and result summary inside the existing `metadata.attribution` JSON object.
 - `/api/newsletter/subscribe` upserts `newsletter_subscribers`, then runs the
   configured newsletter provider.
+- `/api/tools/events` validates anonymous funnel events and writes them to
+  `tool_events`. A successful attributed contact request writes the final
+  `contact_submitted` event from the server.
 
 Supabase write failures are logged server-side and do not block Resend email
 delivery. This prevents the live forms from going down during setup or a brief
 database issue.
 
-Tool attribution requires no additional table or Supabase configuration.
+Tool attribution itself requires no additional table. Funnel analytics requires
+the `tool_events` table above.
 
 ## Next Tables
 
