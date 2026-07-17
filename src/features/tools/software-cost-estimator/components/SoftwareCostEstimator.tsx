@@ -9,6 +9,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { buildToolContactHref } from "@/features/leads/tool-attribution";
 import { routes } from "@/lib/routes";
 import { getTool } from "../../data";
 import {
@@ -117,10 +118,34 @@ export function SoftwareCostEstimator() {
     ? 100
     : Math.round((answeredCount / wizardSteps.length) * 100);
   const showEstimate = Boolean(isResultStep && estimate);
-  const contactHref = estimate
-    ? `${routes.contact}?intent=software-cost-estimator&range=${encodeURIComponent(
-        `${formatCurrency(estimate.low)} - ${formatCurrency(estimate.high)}`,
-      )}`
+  const contactHref = estimate && isEstimatorComplete(state)
+    ? buildToolContactHref({
+        tool: "software-cost-estimator",
+        reason: getEstimatorReason(state.projectType),
+        summary: `${getOptionLabel(projectTypeOptions, state.projectType)} estimated at ${formatCurrency(estimate.low)} - ${formatCurrency(estimate.high)}`,
+        message: [
+          "I completed the XDCoderz Software Cost Estimator and would like to discuss this project.",
+          "",
+          `Indicative investment: ${formatCurrency(estimate.low)} - ${formatCurrency(estimate.high)}`,
+          `Project: ${getOptionLabel(projectTypeOptions, state.projectType)}`,
+          `Build class: ${getOptionLabel(complexityOptions, state.complexity)}`,
+          `Timeline: ${getOptionLabel(timelineOptions, state.timeline)}`,
+          `Integrations: ${getOptionLabel(integrationOptions, state.integrationLevel)}`,
+          `Delivery ownership: ${getOptionLabel(ownershipOptions, state.ownershipLevel)}`,
+          "",
+          "Please help me validate the scope, priorities, and most practical delivery plan.",
+        ].join("\n"),
+        details: {
+          Project: getOptionLabel(projectTypeOptions, state.projectType),
+          "Build class": getOptionLabel(complexityOptions, state.complexity),
+          Timeline: getOptionLabel(timelineOptions, state.timeline),
+          Integrations: getOptionLabel(integrationOptions, state.integrationLevel),
+          Ownership: getOptionLabel(ownershipOptions, state.ownershipLevel),
+          "Estimated investment": `${formatCurrency(estimate.low)} - ${formatCurrency(estimate.high)}`,
+          "Estimated delivery": estimate.timelineWeeks,
+          "Scope score": `${estimate.score}/13`,
+        },
+      })
     : routes.contact;
 
   function handleSelect(field: EstimatorField, value: string) {
@@ -388,6 +413,26 @@ export function SoftwareCostEstimator() {
       </section>
     </>
   );
+}
+
+function getOptionLabel<T extends string>(
+  options: Option<T>[],
+  value: T,
+) {
+  return options.find((option) => option.value === value)?.label ?? value;
+}
+
+function getEstimatorReason(projectType: ProjectType) {
+  const reasons: Record<ProjectType, string> = {
+    "business-website": "Website development",
+    "web-application": "Web application development",
+    "android-application": "Android app development",
+    "desktop-application": "Desktop app development",
+    "saas-product": "SaaS MVP development",
+    "automation-system": "Workflow automation",
+  };
+
+  return reasons[projectType];
 }
 
 type WizardQuestionProps = {

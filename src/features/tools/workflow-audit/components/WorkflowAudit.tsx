@@ -12,6 +12,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { buildToolContactHref } from "@/features/leads/tool-attribution";
 import { routes } from "@/lib/routes";
 import { getTool } from "../../data";
 import {
@@ -96,8 +97,34 @@ export function WorkflowAudit() {
   const currentValue = currentStep ? state[currentStep.field] : null;
   const answeredCount = auditSteps.filter((step) => Boolean(state[step.field])).length;
   const progress = isResultStep ? 100 : Math.round((answeredCount / auditSteps.length) * 100);
-  const contactHref = result
-    ? `${routes.contact}?intent=workflow-audit&score=${result.score}&system=${encodeURIComponent(result.recommendedSystem)}`
+  const contactHref = result && isWorkflowAuditComplete(state)
+    ? buildToolContactHref({
+        tool: "workflow-audit",
+        reason: "Workflow automation",
+        summary: `${result.band} automation priority with a ${result.score}/100 score`,
+        message: [
+          "I completed the XDCoderz Workflow Audit and would like to discuss the recommended system.",
+          "",
+          `Priority: ${result.band} (${result.score}/100)`,
+          `Recommended system: ${result.recommendedSystem}`,
+          `Automation fit: ${result.automationFit}`,
+          `Potential recovery: ${result.recoverableTime}`,
+          `Best first move: ${result.firstMove}`,
+          "",
+          "Please help me assess the implementation scope and expected operational return.",
+        ].join("\n"),
+        details: {
+          Workflow: getAuditOptionLabel("workflowType", state.workflowType),
+          Frequency: getAuditOptionLabel("frequency", state.frequency),
+          "Weekly effort": getAuditOptionLabel("weeklyHours", state.weeklyHours),
+          "People involved": getAuditOptionLabel("peopleInvolved", state.peopleInvolved),
+          "Error impact": getAuditOptionLabel("errorImpact", state.errorImpact),
+          "Current tools": getAuditOptionLabel("toolMaturity", state.toolMaturity),
+          "Priority score": `${result.score}/100 (${result.band})`,
+          "Recommended system": result.recommendedSystem,
+          "Potential recovery": result.recoverableTime,
+        },
+      })
     : routes.contact;
 
   function selectOption(field: AuditField, value: string) {

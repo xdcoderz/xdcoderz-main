@@ -88,7 +88,10 @@ through server routes using `SUPABASE_SERVICE_ROLE_KEY`, which can bypass RLS.
 
 ## Current Write Flow
 
-- `/api/contact` writes to `contact_leads`, then sends Resend emails.
+- `/api/contact` writes to `contact_leads`, then sends Resend emails. Enquiries
+  arriving from the Software Cost Estimator, Workflow Audit, or Project Ideas
+  Generator use `source = tool:<tool-slug>` and keep the validated tool inputs
+  and result summary inside the existing `metadata.attribution` JSON object.
 - `/api/newsletter/subscribe` upserts `newsletter_subscribers`, then runs the
   configured newsletter provider.
 
@@ -96,12 +99,13 @@ Supabase write failures are logged server-side and do not block Resend email
 delivery. This prevents the live forms from going down during setup or a brief
 database issue.
 
+Tool attribution requires no additional table or Supabase configuration.
+
 ## Next Tables
 
 Add these later when the tool system starts collecting serious intent:
 
 ```txt
-tool_leads
 project_idea_runs
 software_estimates
 workflow_audits
