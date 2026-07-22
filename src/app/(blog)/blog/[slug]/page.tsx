@@ -11,6 +11,7 @@ import {
 } from "@/features/blog/blog-utils";
 import { AuthorBio } from "@/features/blog/components/AuthorBio";
 import { BlogFaq, type BlogFaqItem } from "@/features/blog/components/BlogFaq";
+import { BlogComments } from "@/features/blog/components/BlogComments";
 import { BlogShareActions } from "@/features/blog/components/BlogShareActions";
 import { MarkdownRenderer } from "@/features/blog/components/MarkdownRenderer";
 import { ReadingProgressBar } from "@/features/blog/components/ReadingProgressBar";
@@ -272,6 +273,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           <div className="article-afterword">
             <AuthorBio author={post.author} />
+            <BlogComments slug={post.slug} />
             <BlogFaq items={faqItems} />
             <RelatedPosts posts={relatedPosts} />
           </div>

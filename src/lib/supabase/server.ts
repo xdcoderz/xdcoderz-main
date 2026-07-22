@@ -7,6 +7,10 @@ type SupabaseWriteResult =
   | { ok: true; skipped: false }
   | { ok: false; skipped: true; reason: string };
 
+type SupabaseReadResult<T> =
+  | { ok: true; skipped: false; data: T[] }
+  | { ok: false; skipped: true; reason: string; data: T[] };
+
 function getSupabaseConfig(): SupabaseConfig | null {
   const url =
     process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ||
@@ -39,6 +43,57 @@ export async function upsertSupabaseRow(
   conflictColumn: string,
 ): Promise<SupabaseWriteResult> {
   return writeSupabaseRow(table, row, conflictColumn);
+}
+
+export async function selectSupabaseRows<T>(
+  table: string,
+  searchParams: Record<string, string>,
+): Promise<SupabaseReadResult<T>> {
+  const config = getSupabaseConfig();
+
+  if (!config) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: "Supabase environment variables are not configured.",
+      data: [],
+    };
+  }
+
+  const endpoint = new URL(`/rest/v1/${table}`, config.url);
+
+  for (const [key, value] of Object.entries(searchParams)) {
+    endpoint.searchParams.set(key, value);
+  }
+
+  const response = await fetch(endpoint.toString(), {
+    method: "GET",
+    headers: {
+      apikey: config.secretKey,
+      authorization: `Bearer ${config.secretKey}`,
+      accept: "application/json",
+    },
+  });
+
+  if (response.ok) {
+    return {
+      ok: true,
+      skipped: false,
+      data: (await response.json()) as T[],
+    };
+  }
+
+  let detail = "";
+
+  try {
+    detail = await response.text();
+  } catch {
+    detail = "";
+  }
+
+  throw new Error(
+    `Supabase ${table} read failed with ${response.status}${detail ? `: ${detail}` : "."}`,
+  );
 }
 
 async function writeSupabaseRow(
