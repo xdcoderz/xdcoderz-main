@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     routes.contact,
     routes.about,
     routes.privacy,
+    routes.terms,
     ...(features.blog ? [routes.blog] : []),
   ];
   const productRoutes = products.flatMap((product) => {

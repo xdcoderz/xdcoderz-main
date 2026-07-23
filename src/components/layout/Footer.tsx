@@ -59,6 +59,7 @@ export function Footer() {
             <Link href={routes.about}>About</Link>
             <Link href={routes.contact}>Contact</Link>
             <Link href={routes.privacy}>Privacy</Link>
+            <Link href={routes.terms}>Terms</Link>
             <Link href={routes.service(services[0].slug)}>Website development</Link>
           </div>
         </div>

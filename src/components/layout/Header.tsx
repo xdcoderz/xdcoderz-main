@@ -63,7 +63,7 @@ export function Header() {
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <ThemeToggle />
-            <MobileNav items={navItems} />
+            <MobileNav items={navItems} blogCategories={blogCategories} />
           </div>
         </div>
       </header>
