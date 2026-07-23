@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { saveContactLead } from "@/features/leads/storage";
 import {
+  getToolAttributionLabel,
+  sanitizeToolAttribution,
+  type ToolAttribution,
+} from "@/features/leads/tool-attribution";
+import { sanitizeToolEventInput } from "@/features/tools/analytics/events";
+import { saveToolEvent } from "@/features/tools/analytics/storage";
+import {
   escapeHtml,
   getContactFromEmail,
   getContactReplyToEmail,
@@ -48,6 +55,15 @@ export async function POST(request: Request) {
   const email = normalizeEmail(getString(payload.email));
   const reason = trimAndLimit(getString(payload.reason), MAX_REASON_LENGTH);
   const message = trimAndLimit(getString(payload.message), MAX_MESSAGE_LENGTH);
+  const attribution = sanitizeToolAttribution(payload.attribution);
+  const contactSubmissionEvent = attribution
+    ? sanitizeToolEventInput({
+        sessionId: payload.sessionId,
+        tool: attribution.tool,
+        event: "contact_submitted",
+        metadata: { reason },
+      })
+    : null;
 
   if (!name || !reason || message.length < 20) {
     return NextResponse.json(
@@ -107,6 +123,7 @@ export async function POST(request: Request) {
       message,
       ip,
       userAgent: request.headers.get("user-agent") ?? "not provided",
+      attribution,
     });
 
     await sendContactEmails({
@@ -116,7 +133,10 @@ export async function POST(request: Request) {
       message,
       ip,
       userAgent: request.headers.get("user-agent") ?? "not provided",
+      attribution,
     });
+
+    await persistContactSubmissionEvent(contactSubmissionEvent);
 
     return NextResponse.json({
       ok: true,
@@ -135,6 +155,22 @@ export async function POST(request: Request) {
   }
 }
 
+async function persistContactSubmissionEvent(
+  event: NonNullable<ReturnType<typeof sanitizeToolEventInput>> | null,
+) {
+  if (!event) return;
+
+  try {
+    const result = await saveToolEvent(event);
+
+    if (result.skipped) {
+      console.warn("Contact submission event storage skipped", result.reason);
+    }
+  } catch (error) {
+    console.error("Contact submission event storage failed", error);
+  }
+}
+
 type ContactEmailInput = {
   name: string;
   email: string;
@@ -142,6 +178,7 @@ type ContactEmailInput = {
   message: string;
   ip: string;
   userAgent: string;
+  attribution: ToolAttribution | null;
 };
 
 async function sendContactEmails(input: ContactEmailInput) {
@@ -153,6 +190,8 @@ async function sendContactEmails(input: ContactEmailInput) {
   const safeMessage = escapeHtml(input.message).replaceAll("\n", "<br />");
   const safeIp = escapeHtml(input.ip);
   const safeUserAgent = escapeHtml(input.userAgent);
+  const attributionText = formatAttributionText(input.attribution);
+  const attributionHtml = formatAttributionHtml(input.attribution);
 
   await sendResendEmail({
     from: fromEmail,
@@ -163,6 +202,7 @@ async function sendContactEmails(input: ContactEmailInput) {
       `Name: ${input.name}`,
       `Email: ${input.email}`,
       `Reason: ${input.reason}`,
+      ...attributionText,
       "",
       input.message,
       "",
@@ -175,6 +215,7 @@ async function sendContactEmails(input: ContactEmailInput) {
       `<li><strong>Name:</strong> ${safeName}</li>`,
       `<li><strong>Email:</strong> ${safeEmail}</li>`,
       `<li><strong>Reason:</strong> ${safeReason}</li>`,
+      attributionHtml,
       `<li><strong>IP:</strong> ${safeIp}</li>`,
       `<li><strong>User agent:</strong> ${safeUserAgent}</li>`,
       "</ul>",
@@ -190,6 +231,9 @@ async function sendContactEmails(input: ContactEmailInput) {
       `Hi ${input.name},`,
       "",
       "Thanks for contacting XDCoderz. Your message has reached the growth inbox.",
+      input.attribution
+        ? `We also received the context from your ${getToolAttributionLabel(input.attribution.tool)} result.`
+        : "",
       "If it is a project enquiry, we will review the context and reply with the next practical step.",
       "",
       "XDCoderz",
@@ -197,10 +241,42 @@ async function sendContactEmails(input: ContactEmailInput) {
     html: [
       `<p>Hi ${safeName},</p>`,
       "<p>Thanks for contacting <strong>XDCoderz</strong>. Your message has reached the growth inbox.</p>",
+      input.attribution
+        ? `<p>We also received the context from your <strong>${escapeHtml(getToolAttributionLabel(input.attribution.tool))}</strong> result.</p>`
+        : "",
       "<p>If it is a project enquiry, we will review the context and reply with the next practical step.</p>",
       "<p>XDCoderz</p>",
     ].join(""),
   });
+}
+
+function formatAttributionText(attribution: ToolAttribution | null) {
+  if (!attribution) return [];
+
+  return [
+    `Source tool: ${getToolAttributionLabel(attribution.tool)}`,
+    `Source page: ${attribution.sourcePath}`,
+    `Tool summary: ${attribution.summary}`,
+    ...Object.entries(attribution.details).map(([key, value]) => `${key}: ${value}`),
+  ];
+}
+
+function formatAttributionHtml(attribution: ToolAttribution | null) {
+  if (!attribution) return "";
+
+  const details = Object.entries(attribution.details)
+    .map(
+      ([key, value]) =>
+        `<li><strong>${escapeHtml(key)}:</strong> ${escapeHtml(value)}</li>`,
+    )
+    .join("");
+
+  return [
+    `<li><strong>Source tool:</strong> ${escapeHtml(getToolAttributionLabel(attribution.tool))}</li>`,
+    `<li><strong>Source page:</strong> ${escapeHtml(attribution.sourcePath)}</li>`,
+    `<li><strong>Tool summary:</strong> ${escapeHtml(attribution.summary)}</li>`,
+    details,
+  ].join("");
 }
 
 async function persistContactLead(input: ContactEmailInput) {

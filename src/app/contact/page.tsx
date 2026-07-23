@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mail, MessageSquare, Send } from "lucide-react";
 import { Section } from "@/components/ui/Section";
+import { parseToolAttributionSearchParams } from "@/features/leads/tool-attribution";
 import { site } from "@/lib/site";
 import { ContactForm } from "./ContactForm";
 
@@ -22,7 +23,13 @@ const reasons = [
   "Website feedback",
 ];
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const attribution = parseToolAttributionSearchParams(await searchParams);
+
   return (
     <>
       <section className="border-b border-neutral-200 bg-neutral-50 px-6 py-16">
@@ -42,7 +49,7 @@ export default function ContactPage() {
       </section>
       <Section>
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <ContactForm />
+          <ContactForm attribution={attribution} />
           <div className="grid gap-6">
             <article className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
               <span className="grid size-11 place-items-center rounded-md bg-neutral-950 text-white">

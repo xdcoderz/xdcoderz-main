@@ -3,6 +3,11 @@
 import { FormEvent, useId, useState } from "react";
 import { Check, Send } from "lucide-react";
 import { TurnstileWidget } from "@/components/security/TurnstileWidget";
+import {
+  getToolAttributionLabel,
+  type ToolAttribution,
+} from "@/features/leads/tool-attribution";
+import { getToolSessionId } from "@/features/tools/analytics/client";
 
 const reasons = [
   "Website development",
@@ -21,7 +26,7 @@ type SubmitState = "idle" | "loading" | "success" | "error";
 const defaultMessage =
   "Tell us what you want to build, improve, or validate. The sharper the context, the better the next step.";
 
-export function ContactForm() {
+export function ContactForm({ attribution }: { attribution: ToolAttribution | null }) {
   const nameId = useId();
   const emailId = useId();
   const reasonId = useId();
@@ -52,6 +57,8 @@ export function ContactForm() {
           message: formData.get("message"),
           website: formData.get("website"),
           turnstileToken: formData.get("cf-turnstile-response"),
+          attribution,
+          sessionId: attribution ? getToolSessionId() : null,
         }),
       });
       const result = (await response.json()) as {
@@ -105,6 +112,17 @@ export function ContactForm() {
       >
         {notice}
       </p>
+
+      {attribution && (
+        <div className="mt-5 rounded-md border border-sky-200 bg-sky-50 p-4 text-sm dark:border-sky-400/20 dark:bg-sky-400/10">
+          <p className="font-semibold text-sky-800 dark:text-sky-200">
+            {getToolAttributionLabel(attribution.tool)} context attached
+          </p>
+          <p className="mt-1 leading-6 text-neutral-650 dark:text-neutral-300">
+            {attribution.summary}
+          </p>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <div>
@@ -160,7 +178,7 @@ export function ContactForm() {
           required
           disabled={status === "loading" || status === "success"}
           className="mt-2 min-h-12 w-full rounded-md border border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-950 transition focus:border-sky-700"
-          defaultValue=""
+          defaultValue={attribution?.reason ?? ""}
         >
           <option value="" disabled>
             Select what this is about
@@ -190,6 +208,7 @@ export function ContactForm() {
           disabled={status === "loading" || status === "success"}
           className="mt-2 w-full resize-y rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm leading-6 text-neutral-950 transition focus:border-sky-700"
           placeholder="What outcome do you want, what exists today, and what would make this worth building?"
+          defaultValue={attribution?.message}
         />
       </div>
 

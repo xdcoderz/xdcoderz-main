@@ -30,8 +30,10 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-neutral-950">Analytics and cookies</h2>
             <p className="mt-3">
-              Analytics and advertising cookies are not currently enabled in the website code. If that changes,
-              this page should be updated and consent controls should be added where legally required.
+              XDCoderz uses privacy-focused website analytics, technical error monitoring, and anonymous tool
+              funnel events to understand whether pages and tools work effectively. Tool usage is linked with a
+              random identifier stored in your browser&apos;s local storage. It is not connected to your name or
+              email unless you choose to submit the contact form. Advertising trackers are not used.
             </p>
           </section>
           <section>

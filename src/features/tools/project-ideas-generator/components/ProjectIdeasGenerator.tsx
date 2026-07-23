@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowRight,
   Check,
   Clipboard,
   Copy,
@@ -9,7 +10,10 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
+import { useRef, useState } from "react";
+import { buildToolContactHref } from "@/features/leads/tool-attribution";
+import { trackToolEvent } from "@/features/tools/analytics/client";
 import {
   audienceOptions,
   defaultIdeaBrief,
@@ -30,15 +34,36 @@ export function ProjectIdeasGenerator() {
   const [brief, setBrief] = useState<IdeaBrief>(defaultIdeaBrief);
   const [ideas, setIdeas] = useState<GeneratedProjectIdea[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const startedRef = useRef(false);
   const complete = isIdeaBriefComplete(brief);
 
   function updateBrief<Key extends keyof IdeaBrief>(key: Key, value: IdeaBrief[Key]) {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackToolEvent({
+        tool: "project-ideas-generator",
+        event: "tool_started",
+        metadata: { firstField: key },
+      });
+    }
+
     setBrief((current) => ({ ...current, [key]: value }));
   }
 
   function generateIdeas() {
     if (!isIdeaBriefComplete(brief)) return;
     setIdeas(generateProjectIdeas(brief));
+    trackToolEvent({
+      tool: "project-ideas-generator",
+      event: "tool_completed",
+      metadata: {
+        topic: brief.topic,
+        audience: brief.audience,
+        platform: brief.platform,
+        difficulty: brief.difficulty,
+        ideasGenerated: 10,
+      },
+    });
   }
 
   async function copyText(id: string, value: string) {
@@ -201,6 +226,19 @@ export function ProjectIdeasGenerator() {
                     idea={idea}
                     copied={copiedId === idea.id}
                     onCopy={() => copyText(idea.id, formatIdeaForClipboard(idea))}
+                    contactHref={buildIdeaContactHref(brief, idea)}
+                    onContactClick={() =>
+                      trackToolEvent({
+                        tool: "project-ideas-generator",
+                        event: "contact_clicked",
+                        metadata: {
+                          topic: brief.topic,
+                          ideaNumber: idea.number,
+                          ideaTitle: idea.title,
+                          platform: idea.platform,
+                        },
+                      })
+                    }
                   />
                 ))}
               </div>
@@ -292,10 +330,14 @@ function IdeaCard({
   idea,
   copied,
   onCopy,
+  contactHref,
+  onContactClick,
 }: {
   idea: GeneratedProjectIdea;
   copied: boolean;
   onCopy: () => void;
+  contactHref: string;
+  onContactClick: () => void;
 }) {
   return (
     <article className="flex h-full flex-col rounded-lg border border-neutral-200 bg-neutral-50 p-5 transition hover:-translate-y-1 hover:border-sky-300 dark:border-white/10 dark:bg-white/[0.03]">
@@ -345,9 +387,60 @@ function IdeaCard({
       <div className="mt-auto grid gap-4 border-t border-neutral-200 pt-5 dark:border-white/10">
         <IdeaDetail label="Monetization" value={idea.monetization} />
         <IdeaDetail label="Validation test" value={idea.validation} />
+        <Link
+          href={contactHref}
+          onClick={onContactClick}
+          className="button-link button-link--primary mt-1 w-full"
+        >
+          Discuss this idea
+          <ArrowRight size={16} aria-hidden="true" />
+        </Link>
       </div>
     </article>
   );
+}
+
+function buildIdeaContactHref(brief: IdeaBrief, idea: GeneratedProjectIdea) {
+  const audience = getIdeaOptionLabel(audienceOptions, brief.audience);
+  const platform = getIdeaOptionLabel(platformOptions, brief.platform);
+  const ambition = getIdeaOptionLabel(difficultyOptions, brief.difficulty);
+
+  return buildToolContactHref({
+    tool: "project-ideas-generator",
+    reason: "Feature request or product idea",
+    summary: `${idea.title} for ${audience}`,
+    message: [
+      "I generated this concept with the XDCoderz Project Ideas Generator and would like to evaluate building it.",
+      "",
+      `Idea: ${idea.title}`,
+      `Thesis: ${idea.thesis}`,
+      `Target customer: ${idea.targetCustomer}`,
+      `Product surface: ${idea.platform}`,
+      `MVP direction: ${idea.buildScope}`,
+      `Monetization: ${idea.monetization}`,
+      "",
+      "Please help me pressure-test the opportunity and define a commercially sensible first release.",
+    ].join("\n"),
+    details: {
+      Topic: brief.topic.trim(),
+      Audience: audience,
+      "Preferred platform": platform,
+      Ambition: ambition,
+      Idea: idea.title,
+      "Target customer": idea.targetCustomer,
+      "Generated platform": idea.platform,
+      Monetization: idea.monetization,
+      "Validation test": idea.validation,
+    },
+  });
+}
+
+function getIdeaOptionLabel<T extends string>(
+  options: IdeaOption<T>[],
+  value: T | null,
+) {
+  if (!value) return "Not specified";
+  return options.find((option) => option.value === value)?.label ?? value;
 }
 
 function IdeaDetail({ label, value }: { label: string; value: string }) {

@@ -2,6 +2,7 @@ import {
   insertSupabaseRow,
   upsertSupabaseRow,
 } from "@/lib/supabase/server";
+import type { ToolAttribution } from "./tool-attribution";
 
 export type ContactLeadRecord = {
   name: string;
@@ -10,6 +11,7 @@ export type ContactLeadRecord = {
   message: string;
   ip?: string;
   userAgent?: string;
+  attribution?: ToolAttribution | null;
 };
 
 export type NewsletterSubscriberRecord = {
@@ -26,11 +28,12 @@ export async function saveContactLead(record: ContactLeadRecord) {
     email: record.email,
     reason: record.reason,
     message: record.message,
-    source: "contact_page",
+    source: record.attribution ? `tool:${record.attribution.tool}` : "contact_page",
     status: "new",
     metadata: {
       ip: record.ip ?? null,
       userAgent: record.userAgent ?? null,
+      attribution: record.attribution ?? null,
     },
   });
 }

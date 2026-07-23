@@ -12,7 +12,6 @@ const navItems = [
   { label: "Services", href: "/#services" },
   { label: "Work", href: routes.work },
   ...(features.blog ? [{ label: "Blog", href: routes.blog }] : []),
-  { label: "Contact", href: routes.contact },
 ];
 
 export function Header() {

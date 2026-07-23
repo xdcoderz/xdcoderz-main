@@ -902,6 +902,198 @@
   font-weight: 700;
 }
 
+.blog-comments {
+  margin-top: 54px;
+  border-top: 1px solid var(--journal-line-strong);
+  padding-top: 34px;
+}
+
+.blog-comments__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.blog-comments h2 {
+  margin: 9px 0 0;
+  font-family: var(--font-journal-display), Georgia, serif;
+  font-size: 31px;
+  font-weight: 500;
+  line-height: 1.16;
+}
+
+.blog-comments__header p:last-child {
+  margin: 8px 0 0;
+  color: var(--journal-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.blog-comments__form {
+  display: grid;
+  gap: 11px;
+  margin-top: 24px;
+  border-top: 1px solid var(--journal-line);
+  border-bottom: 1px solid var(--journal-line);
+  padding: 22px 0 24px;
+}
+
+.blog-comments__form label {
+  color: var(--journal-ink);
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.blog-comments__form input,
+.blog-comments__form textarea {
+  width: 100%;
+  border: 1px solid var(--journal-line-strong);
+  border-radius: 0;
+  background: var(--journal-paper);
+  color: var(--journal-ink);
+  font: inherit;
+}
+
+.blog-comments__form input {
+  min-height: 45px;
+  padding: 0 13px;
+}
+
+.blog-comments__form textarea {
+  min-height: 128px;
+  resize: vertical;
+  padding: 12px 13px;
+  font-family: var(--font-journal-text), Georgia, serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.blog-comments__form input::placeholder,
+.blog-comments__form textarea::placeholder {
+  color: var(--journal-muted);
+}
+
+.blog-comments__form input:focus,
+.blog-comments__form textarea:focus {
+  border-color: var(--journal-accent);
+  outline: 2px solid color-mix(in srgb, var(--journal-accent) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.blog-comments__honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.blog-comments__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.blog-comments__actions p {
+  margin: 0;
+  color: var(--journal-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.blog-comments__actions button {
+  display: inline-flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--journal-ink);
+  border-radius: 0;
+  padding: 0 15px;
+  background: var(--journal-ink);
+  color: var(--journal-paper);
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.blog-comments__actions button:hover {
+  border-color: var(--journal-accent);
+  background: var(--journal-accent);
+  color: var(--accent-contrast);
+}
+
+.blog-comments__actions button:disabled,
+.blog-comments__form input:disabled,
+.blog-comments__form textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.blog-comments__list {
+  margin-top: 26px;
+  border-bottom: 1px solid var(--journal-line);
+}
+
+.blog-comments__item {
+  border-top: 1px solid var(--journal-line);
+  padding: 20px 0 22px;
+}
+
+.blog-comments__item header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.blog-comments__avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--journal-line-strong);
+  color: var(--journal-accent);
+}
+
+.blog-comments__item h3 {
+  margin: 0;
+  color: var(--journal-ink);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.blog-comments__item time {
+  display: block;
+  margin-top: 3px;
+  color: var(--journal-muted);
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.blog-comments__item > p,
+.blog-comments__empty {
+  margin: 13px 0 0;
+  color: var(--journal-muted-strong);
+  font-family: var(--font-journal-text), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.blog-comments__empty {
+  border-top: 1px solid var(--journal-line);
+  padding: 20px 0;
+}
+
 .article-faq,
 .article-related {
   margin-top: 54px;
@@ -1569,6 +1761,16 @@
   .article-related__item {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  .blog-comments__header,
+  .blog-comments__actions {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .blog-comments__actions button {
+    width: 100%;
   }
 
   .subscriber-cta {
