@@ -11,18 +11,9 @@ type PopupStorageValue = {
   expiresAt?: number;
 };
 
-const storageKey = "xdcoderz-newsletter-popup";
-const sessionKey = "xdcoderz-newsletter-popup-session";
+const storageKey = "xdcoderz-newsletter-modal";
+const sessionKey = "xdcoderz-newsletter-modal-session";
 const dismissMs = 7 * 24 * 60 * 60 * 1000;
-const popupDelayMs = 10_000;
-const scrollDepth = 0.58;
-
-const excludedPathStarts = [
-  "/admin",
-  "/contact",
-  "/privacy",
-  "/terms",
-];
 
 export function NewsletterPopup() {
   const pathname = usePathname();
@@ -36,67 +27,43 @@ export function NewsletterPopup() {
     "Get one sharp weekly briefing on technology shifts, business changes, and product ideas worth acting on before the market gets crowded.",
   );
 
-  const isExcluded = useMemo(() => {
-    if (!pathname) {
-      return true;
-    }
-
-    return (
-      excludedPathStarts.some((prefix) => pathname.startsWith(prefix)) ||
-      pathname.includes("/download")
-    );
-  }, [pathname]);
+  const isBlogPost = useMemo(() => isBlogPostPath(pathname), [pathname]);
 
   useEffect(() => {
-    if (isExcluded || shouldSkipPopup()) {
+    if (!isBlogPost || shouldSkipPopup()) {
       return;
     }
 
-    let hasOpened = false;
-
-    function openPopup() {
-      if (hasOpened || shouldSkipPopup()) {
-        return;
-      }
-
-      hasOpened = true;
+    const openTimer = window.setTimeout(() => {
       sessionStorage.setItem(sessionKey, "shown");
       setIsOpen(true);
+    }, 0);
+
+    return () => window.clearTimeout(openTimer);
+  }, [isBlogPost, pathname]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
     }
 
-    const delay = window.setTimeout(openPopup, popupDelayMs);
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
-    function handleScroll() {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.body.style.overflow = "hidden";
 
-      if (scrollableHeight <= 0) {
-        return;
-      }
-
-      if (window.scrollY / scrollableHeight >= scrollDepth) {
-        openPopup();
-      }
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
-
-    function handleMouseOut(event: MouseEvent) {
-      if (window.innerWidth < 900 || event.clientY > 12) {
-        return;
-      }
-
-      openPopup();
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    document.addEventListener("mouseout", handleMouseOut);
 
     return () => {
-      window.clearTimeout(delay);
-      window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("mouseout", handleMouseOut);
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
     };
-  }, [isExcluded, pathname]);
+  }, [isOpen]);
 
-  if (!isOpen || isExcluded) {
+  if (!isOpen || !isBlogPost) {
     return null;
   }
 
@@ -127,7 +94,7 @@ export function NewsletterPopup() {
           email: formData.get("email"),
           website: formData.get("website"),
           turnstileToken: formData.get("cf-turnstile-response"),
-          source: "newsletter-popup",
+          source: "newsletter-modal",
           slug: pathname,
         }),
       });
@@ -155,28 +122,28 @@ export function NewsletterPopup() {
   }
 
   return (
-    <div className="newsletter-popup" role="dialog" aria-labelledby={titleId} aria-describedby={descriptionId}>
-      <div className="newsletter-popup__shell">
+    <div className="newsletter-modal" role="dialog" aria-labelledby={titleId} aria-describedby={descriptionId} aria-modal="true">
+      <div className="newsletter-modal__shell">
         <button
           type="button"
-          className="newsletter-popup__close"
+          className="newsletter-modal__close"
           onClick={closePopup}
           aria-label="Close Friday Brief signup"
         >
           <X size={16} aria-hidden="true" />
         </button>
 
-        <div className="newsletter-popup__badge" aria-hidden="true">
+        <div className="newsletter-modal__badge" aria-hidden="true">
           <Mail size={18} />
         </div>
 
-        <p className="newsletter-popup__kicker">Friday Brief</p>
+        <p className="newsletter-modal__kicker">Friday Brief</p>
         <h2 id={titleId}>Most opportunities look obvious only after someone else builds them.</h2>
         <p id={descriptionId}>{message}</p>
 
-        <form className="newsletter-popup__form" onSubmit={handleSubmit}>
+        <form className="newsletter-modal__form" onSubmit={handleSubmit}>
           <label htmlFor={emailId}>Email address</label>
-          <div className="newsletter-popup__row">
+          <div className="newsletter-modal__row">
             <input
               id={emailId}
               name="email"
@@ -204,7 +171,7 @@ export function NewsletterPopup() {
             </button>
           </div>
 
-          <label htmlFor={honeypotId} className="newsletter-popup__honeypot">
+          <label htmlFor={honeypotId} className="newsletter-modal__honeypot">
             Website
             <input
               id={honeypotId}
@@ -215,11 +182,11 @@ export function NewsletterPopup() {
             />
           </label>
 
-          <TurnstileWidget className="newsletter-popup__turnstile" />
+          <TurnstileWidget className="newsletter-modal__turnstile" />
 
           <button
             type="button"
-            className="newsletter-popup__skip"
+            className="newsletter-modal__skip"
             onClick={closePopup}
           >
             Not this week
@@ -228,6 +195,18 @@ export function NewsletterPopup() {
       </div>
     </div>
   );
+}
+
+function isBlogPostPath(pathname: string | null) {
+  if (!pathname || !pathname.startsWith("/blog/")) {
+    return false;
+  }
+
+  return ![
+    "/blog/category/",
+    "/blog/tag/",
+    "/blog/search",
+  ].some((prefix) => pathname.startsWith(prefix));
 }
 
 function shouldSkipPopup() {

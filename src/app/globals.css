@@ -1417,41 +1417,45 @@ select:focus-visible {
   text-transform: uppercase;
 }
 
-.newsletter-popup {
+.newsletter-modal {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  inset: 0;
   z-index: 80;
-  width: min(calc(100vw - 32px), 440px);
-  animation: newsletter-popup-in 220ms ease both;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--background) 68%, transparent);
+  backdrop-filter: blur(12px);
+  animation: newsletter-modal-in 220ms ease both;
 }
 
-.newsletter-popup__shell {
+.newsletter-modal__shell {
   position: relative;
   overflow: hidden;
+  width: min(100%, 590px);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 24px;
+  padding: 34px;
   background: var(--surface-raised);
   color: var(--foreground);
-  box-shadow: 0 24px 70px rgba(15, 20, 16, 0.22);
+  box-shadow: 0 34px 90px rgba(15, 20, 16, 0.3);
 }
 
-.dark .newsletter-popup__shell {
+.dark .newsletter-modal__shell {
   border-color: var(--border-strong);
   background: color-mix(in srgb, var(--surface-raised) 94%, #000);
   box-shadow: 0 28px 82px rgba(0, 0, 0, 0.46), inset 0 1px rgba(255, 255, 255, 0.035);
 }
 
-.newsletter-popup__shell::before {
+.newsletter-modal__shell::before {
   position: absolute;
   inset: 0 0 auto;
-  height: 4px;
+  height: 6px;
   content: "";
   background: linear-gradient(90deg, var(--accent), var(--market), var(--peach-card));
 }
 
-.newsletter-popup__close {
+.newsletter-modal__close {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -1467,16 +1471,16 @@ select:focus-visible {
   transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease;
 }
 
-.newsletter-popup__close:hover {
+.newsletter-modal__close:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
   background: var(--accent-soft);
 }
 
-.newsletter-popup__badge {
+.newsletter-modal__badge {
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   place-items: center;
   border: 1px solid color-mix(in srgb, var(--accent) 54%, transparent);
   border-radius: 7px;
@@ -1484,7 +1488,7 @@ select:focus-visible {
   color: var(--accent-strong);
 }
 
-.newsletter-popup__kicker {
+.newsletter-modal__kicker {
   margin: 18px 0 0;
   color: var(--accent-strong);
   font-family: var(--font-geist-mono), monospace;
@@ -1493,42 +1497,42 @@ select:focus-visible {
   text-transform: uppercase;
 }
 
-.newsletter-popup h2 {
-  max-width: 360px;
-  margin: 9px 0 0;
+.newsletter-modal h2 {
+  max-width: 500px;
+  margin: 11px 0 0;
   color: var(--foreground);
-  font-size: 25px;
-  font-weight: 680;
-  line-height: 1.12;
+  font-size: 36px;
+  font-weight: 720;
+  line-height: 1.05;
 }
 
-.newsletter-popup p {
-  margin: 12px 0 0;
+.newsletter-modal p {
+  margin: 15px 0 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.65;
 }
 
-.newsletter-popup__form {
+.newsletter-modal__form {
   display: grid;
-  gap: 10px;
-  margin-top: 18px;
+  gap: 11px;
+  margin-top: 24px;
 }
 
-.newsletter-popup__form > label:first-child {
+.newsletter-modal__form > label:first-child {
   color: var(--muted-strong);
   font-size: 11px;
   font-weight: 750;
   text-transform: uppercase;
 }
 
-.newsletter-popup__row {
+.newsletter-modal__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
 }
 
-.newsletter-popup input[type="email"] {
+.newsletter-modal input[type="email"] {
   min-width: 0;
   min-height: 46px;
   border: 1px solid var(--border);
@@ -1539,19 +1543,19 @@ select:focus-visible {
   font: inherit;
 }
 
-.newsletter-popup input[type="email"]::placeholder {
+.newsletter-modal input[type="email"]::placeholder {
   color: var(--muted);
 }
 
-.newsletter-popup input[type="email"]:focus {
+.newsletter-modal input[type="email"]:focus {
   border-color: var(--accent);
   outline: 2px solid color-mix(in srgb, var(--accent) 26%, transparent);
   outline-offset: 2px;
 }
 
-.newsletter-popup__row button {
+.newsletter-modal__row button {
   display: inline-flex;
-  min-height: 46px;
+  min-height: 48px;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -1567,20 +1571,20 @@ select:focus-visible {
   transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
 }
 
-.newsletter-popup__row button:hover {
+.newsletter-modal__row button:hover {
   transform: translateY(-1px);
   border-color: var(--accent-strong);
   background: var(--accent-strong);
   color: var(--accent-contrast);
 }
 
-.newsletter-popup__row button:disabled,
-.newsletter-popup input:disabled {
+.newsletter-modal__row button:disabled,
+.newsletter-modal input:disabled {
   cursor: not-allowed;
   opacity: 0.72;
 }
 
-.newsletter-popup__skip {
+.newsletter-modal__skip {
   width: max-content;
   border: 0;
   padding: 3px 0;
@@ -1593,11 +1597,11 @@ select:focus-visible {
   transition: color 160ms ease;
 }
 
-.newsletter-popup__skip:hover {
+.newsletter-modal__skip:hover {
   color: var(--foreground);
 }
 
-.newsletter-popup__honeypot {
+.newsletter-modal__honeypot {
   position: absolute;
   left: -9999px;
   width: 1px;
@@ -1605,44 +1609,42 @@ select:focus-visible {
   overflow: hidden;
 }
 
-.newsletter-popup__turnstile {
+.newsletter-modal__turnstile {
   min-height: 0;
 }
 
-@keyframes newsletter-popup-in {
+@keyframes newsletter-modal-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(14px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @media (max-width: 640px) {
-  .newsletter-popup {
-    right: 12px;
-    bottom: 12px;
-    left: 12px;
-    width: auto;
+  .newsletter-modal {
+    padding: 14px;
+    align-items: end;
   }
 
-  .newsletter-popup__shell {
-    padding: 22px 18px 18px;
+  .newsletter-modal__shell {
+    padding: 28px 18px 18px;
   }
 
-  .newsletter-popup h2 {
-    max-width: 310px;
-    font-size: 22px;
+  .newsletter-modal h2 {
+    max-width: 330px;
+    font-size: 28px;
   }
 
-  .newsletter-popup__row {
+  .newsletter-modal__row {
     grid-template-columns: 1fr;
   }
 
-  .newsletter-popup__row button {
+  .newsletter-modal__row button {
     width: 100%;
   }
 }
