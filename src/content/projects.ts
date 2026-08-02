@@ -1,63 +1,40 @@
 import type { OpenProject } from "@/features/open-product-lab/types";
-import { routes } from "@/lib/routes";
 
 export const openProjects: OpenProject[] = [
   {
-    slug: "gridforge",
-    name: "GridForge",
-    repo: "xdcoderz/gridforge-releases",
+    slug: "aegis-eye",
+    name: "Aegis Eye",
+    repo: "xdcoderz/aegis-eye",
     status: "active",
-    maturity: "Early release",
-    category: "Desktop App",
-    license: "Public release",
+    maturity: "Priority build",
+    category: "Computer Vision",
+    license: "Open source",
     description:
-      "A Windows utility that turns table images into clean JSON, CSV, and Excel files.",
+      "A vision intelligence project for detecting, tracking, and interpreting operational activity from camera feeds.",
     businessValue:
-      "Removes repetitive spreadsheet cleanup for students, operators, and small teams that need usable data faster.",
-    tags: ["Windows", "OCR", "Automation"],
+      "Turns raw video into actionable signals for teams that need faster awareness, cleaner monitoring, and smarter response workflows.",
+    tags: ["Computer Vision", "Detection", "Monitoring"],
     featured: true,
     links: {
-      product: routes.product("gridforge"),
-      github: "https://github.com/xdcoderz/gridforge-releases",
-      download: routes.productDownload("gridforge"),
+      github: "https://github.com/xdcoderz/aegis-eye",
     },
   },
   {
-    slug: "xdcoderz-platform",
-    name: "XDCoderz Platform",
-    repo: "xdcoderz/xdcoderz-smart-scale-engine",
+    slug: "aegis-command",
+    name: "Aegis Command",
+    repo: "xdcoderz/aegis-command",
     status: "active",
-    maturity: "Production system",
-    category: "Web Platform",
-    license: "Source available",
+    maturity: "Command layer",
+    category: "Operations Platform",
+    license: "Open source",
     description:
-      "The public website, product catalog, blog system, tools directory, and lead engine behind XDCoderz.",
+      "A command and control layer for coordinating signals, decisions, and operational workflows around Aegis systems.",
     businessValue:
-      "Shows how a lean software company can combine marketing, products, tools, and operations in one scalable system.",
-    tags: ["Next.js", "Supabase", "Vercel"],
+      "Gives monitoring-heavy teams a clearer operating surface for reviewing events, coordinating response, and managing system output.",
+    tags: ["Command Center", "Operations", "Workflow"],
     featured: true,
     links: {
-      product: routes.home,
-      github: "https://github.com/xdcoderz/xdcoderz-smart-scale-engine",
-    },
-  },
-  {
-    slug: "xdcoderz-content-engine",
-    name: "Content Engine",
-    repo: "xdcoderz/xdcoderz-content-engine",
-    status: "active",
-    maturity: "Automation layer",
-    category: "Publishing Automation",
-    license: "Source available",
-    description:
-      "A weekly market-intelligence pipeline that collects signals, ranks them, and publishes XDCoderz blog issues.",
-    businessValue:
-      "Turns market noise into consistent publishing momentum without turning the main website into an automation mess.",
-    tags: ["GitHub Actions", "Market Signals", "Publishing"],
-    featured: true,
-    links: {
-      product: routes.blog,
-      github: "https://github.com/xdcoderz/xdcoderz-content-engine",
+      github: "https://github.com/xdcoderz/aegis-command",
     },
   },
 ];
