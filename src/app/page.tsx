@@ -14,6 +14,7 @@ import { features } from "@/config/features";
 import { latestProducts, products } from "@/data/products";
 import { services } from "@/data/services";
 import { getAllBlogPosts } from "@/features/blog/blog-utils";
+import { OpenProductLab } from "@/features/open-product-lab";
 import { featuredTools, ToolCard } from "@/features/tools";
 import { routes } from "@/lib/routes";
 
@@ -161,6 +162,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <OpenProductLab preview />
 
       <section id="categories" className="home-section home-section--muted">
         <div className="home-container">

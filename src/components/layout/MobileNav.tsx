@@ -8,29 +8,23 @@ import { routes } from "@/lib/routes";
 type NavItem = {
   label: string;
   href: string;
+  children?: {
+    label: string;
+    href: string;
+  }[];
 };
 
 type MobileNavProps = {
   items: NavItem[];
-  blogCategories?: string[];
 };
 
-function slugifyTaxonomy(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-export function MobileNav({ items, blogCategories = [] }: MobileNavProps) {
+export function MobileNav({ items }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isBlogOpen, setIsBlogOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   function closeMenu() {
     setIsOpen(false);
-    setIsBlogOpen(false);
+    setOpenGroup(null);
   }
 
   return (
@@ -49,29 +43,28 @@ export function MobileNav({ items, blogCategories = [] }: MobileNavProps) {
         <div className="mobile-nav-panel">
           <nav className="mobile-nav-panel__inner">
             {items.map((item) =>
-              item.href === routes.blog ? (
+              item.children?.length ? (
                 <div key={item.href} className="mobile-nav-group">
                   <button
                     type="button"
                     className="mobile-nav-link mobile-nav-link--button"
-                    aria-expanded={isBlogOpen}
-                    onClick={() => setIsBlogOpen((current) => !current)}
+                    aria-expanded={openGroup === item.href}
+                    onClick={() =>
+                      setOpenGroup((current) => (current === item.href ? null : item.href))
+                    }
                   >
                     <span>{item.label}</span>
                     <ChevronDown size={16} aria-hidden="true" />
                   </button>
-                  {isBlogOpen && (
+                  {openGroup === item.href && (
                     <div className="mobile-nav-submenu">
-                      <Link href={routes.blog} onClick={closeMenu}>
-                        All posts
-                      </Link>
-                      {blogCategories.map((category) => (
+                      {item.children.map((child) => (
                         <Link
-                          key={category}
-                          href={routes.blogCategory(slugifyTaxonomy(category))}
+                          key={child.href}
+                          href={child.href}
                           onClick={closeMenu}
                         >
-                          {category}
+                          {child.label}
                         </Link>
                       ))}
                     </div>

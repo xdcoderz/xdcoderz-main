@@ -37,6 +37,7 @@ export function Footer() {
           <div className="footer-column">
             <h3>Explore</h3>
             <Link href={routes.products}>Products</Link>
+            <Link href={routes.lab}>Open Product Lab</Link>
             <Link href={routes.tools}>Tools</Link>
             <Link href={routes.services}>Services</Link>
             <Link href={routes.work}>Work</Link>
@@ -51,6 +52,7 @@ export function Footer() {
               </Link>
             ))}
             <Link href={routes.roadmap}>Product roadmap</Link>
+            <Link href={routes.lab}>Open-source builds</Link>
             <Link href={routes.tools}>Open business tools</Link>
           </div>
 
