@@ -1407,7 +1407,7 @@ select:focus-visible {
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 1.4fr repeat(3, minmax(0, 0.7fr));
+  grid-template-columns: 1.25fr repeat(4, minmax(0, 0.65fr));
   gap: 56px;
   padding: 58px 0;
 }

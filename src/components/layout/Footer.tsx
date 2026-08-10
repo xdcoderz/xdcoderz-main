@@ -60,15 +60,22 @@ export function Footer() {
             <h3>Company</h3>
             <Link href={routes.about}>About</Link>
             <Link href={routes.contact}>Contact</Link>
-            <Link href={routes.privacy}>Privacy</Link>
-            <Link href={routes.terms}>Terms</Link>
             <Link href={routes.service(services[0].slug)}>Website development</Link>
+          </div>
+
+          <div className="footer-column">
+            <h3>Legal</h3>
+            <Link href={routes.terms}>Terms & Conditions</Link>
+            <Link href={routes.privacy}>Privacy Policy</Link>
+            <Link href={routes.lab}>Open-source notice</Link>
           </div>
         </div>
 
         <div className="site-footer__base">
           <span>&copy; {new Date().getFullYear()} XDCoderz.</span>
-          <span>Products, tools, and custom systems built for real operating leverage.</span>
+          <span>
+            Lab repositories are separate open-source projects; website terms and repository licenses apply.
+          </span>
         </div>
       </div>
     </footer>
