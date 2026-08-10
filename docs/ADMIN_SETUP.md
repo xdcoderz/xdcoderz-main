@@ -4,6 +4,9 @@ The dashboard is available at `/admin` and is intentionally absent from public
 navigation. It provides a 30-day tool funnel, attributed lead management, and a
 subscriber directory.
 
+For the full operating guide, including Open Product Lab project management, see
+[`admin-operations.md`](./admin-operations.md).
+
 ## Security Model
 
 Admin access requires both:
@@ -51,6 +54,7 @@ RLS enabled with no public read policies.
 - `/admin` - 30-day operating overview and unique-session tool funnel.
 - `/admin/leads` - searchable lead inbox, attribution context, and status updates.
 - `/admin/subscribers` - searchable subscriber directory.
+- `/admin/lab` - add GitHub repositories to the Open Product Lab.
 - `/admin/login` - Supabase Auth sign-in.
 
 ## Lead Statuses

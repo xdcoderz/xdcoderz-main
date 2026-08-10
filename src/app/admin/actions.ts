@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isAllowedAdminEmail, requireAdmin } from "@/features/admin/auth";
+import { createLabProjectFromGithubUrl } from "@/features/admin/lab-projects";
 import { leadStatuses, type LeadStatus } from "@/features/admin/types";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
@@ -77,6 +78,22 @@ export async function updateLeadStatus(formData: FormData) {
   revalidatePath("/admin/leads");
 }
 
+export async function addLabProject(formData: FormData) {
+  await requireAdmin();
+  const githubUrl = getString(formData.get("githubUrl")).trim();
+
+  try {
+    await createLabProjectFromGithubUrl(githubUrl);
+  } catch (error) {
+    redirect(`/admin/lab?error=${encodeURIComponent(getErrorMessage(error))}`);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/lab");
+  revalidatePath("/admin/lab");
+  redirect("/admin/lab?created=1");
+}
+
 function getString(value: FormDataEntryValue | null) {
   return typeof value === "string" ? value : "";
 }
@@ -89,4 +106,8 @@ function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
     value,
   );
+}
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : "Unable to add that repository.";
 }

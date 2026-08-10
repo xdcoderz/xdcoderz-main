@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Mail, Users } from "lucide-react";
+import { BarChart3, Boxes, Mail, Users } from "lucide-react";
 
 const items = [
   { href: "/admin", label: "Overview", icon: BarChart3 },
   { href: "/admin/leads", label: "Leads", icon: Mail },
   { href: "/admin/subscribers", label: "Subscribers", icon: Users },
+  { href: "/admin/lab", label: "Lab", icon: Boxes },
 ];
 
 export function AdminNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="mt-4 grid grid-cols-3 gap-2 lg:grid-cols-1" aria-label="Admin navigation">
+    <nav className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-1" aria-label="Admin navigation">
       {items.map((item) => {
         const Icon = item.icon;
         const active =
