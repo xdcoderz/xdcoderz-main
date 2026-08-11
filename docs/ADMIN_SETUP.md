@@ -24,7 +24,9 @@ The secret key must never use a `NEXT_PUBLIC_` environment variable.
 2. Select **Add user** -> **Create new user**.
 3. Create the admin account, preferably `grow.xdcoderz@gmail.com`, with a strong
    unique password and mark the email as confirmed.
-4. In Vercel, add this environment variable to Production and Preview:
+4. In Supabase Dashboard -> Authentication -> Sign In / Providers, keep public
+   email signups disabled. Admin users should be created manually.
+5. In Vercel, add this environment variable to Production and Preview:
 
 ```env
 ADMIN_EMAILS=grow.xdcoderz@gmail.com
@@ -36,7 +38,7 @@ Multiple admins can be comma-separated:
 ADMIN_EMAILS=owner@example.com,operator@example.com
 ```
 
-5. Confirm that these existing variables remain configured in Vercel:
+6. Confirm that these existing variables remain configured in Vercel:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
@@ -44,7 +46,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-6. Redeploy and sign in at `https://www.xdcoderz.xyz/admin/login`.
+7. Redeploy and sign in at `https://www.xdcoderz.xyz/admin/login`.
 
 No database policy for browser reads is required. The operational tables keep
 RLS enabled with no public read policies.

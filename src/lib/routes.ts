@@ -9,6 +9,8 @@ export const routes = {
   roadmap: "/roadmap",
   contact: "/contact",
   about: "/about",
+  adminLogin: "/admin/login",
+  admin: "/admin",
   privacy: "/privacy",
   terms: "/terms",
   product: (slug: string) => `/products/${slug}`,

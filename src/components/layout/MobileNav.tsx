@@ -3,19 +3,11 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
+import type { NavigationItem } from "@/config/navigation";
 import { routes } from "@/lib/routes";
 
-type NavItem = {
-  label: string;
-  href: string;
-  children?: {
-    label: string;
-    href: string;
-  }[];
-};
-
 type MobileNavProps = {
-  items: NavItem[];
+  items: NavigationItem[];
 };
 
 export function MobileNav({ items }: MobileNavProps) {
@@ -81,6 +73,9 @@ export function MobileNav({ items }: MobileNavProps) {
                 </Link>
               ),
             )}
+            <Link href={routes.adminLogin} onClick={closeMenu} className="mobile-nav-link">
+              Admin sign in
+            </Link>
             <Link href={routes.contact} onClick={closeMenu} className="mobile-nav-cta">
               Build with us
               <ArrowRight size={16} aria-hidden="true" />

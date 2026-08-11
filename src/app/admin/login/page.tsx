@@ -24,6 +24,7 @@ export default async function AdminLoginPage() {
         <h1 className="mt-3 text-3xl font-semibold">Admin sign in</h1>
         <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
           Access is limited to verified Supabase accounts explicitly allowed by XDCoderz.
+          Public signups are disabled; this form is only for existing admin accounts.
         </p>
         <LoginForm configured={configured} />
       </div>
