@@ -62,7 +62,7 @@ export function Header() {
           <div className="site-header__actions">
             <Link href={routes.adminLogin} className="admin-sign-in-link">
               <LockKeyhole size={14} aria-hidden="true" />
-              <span>Admin sign in</span>
+              <span>Admin</span>
             </Link>
             <Link href={routes.contact} className="header-cta">
               <span>Build with us</span>
