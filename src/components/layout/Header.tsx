@@ -5,6 +5,7 @@ import { getBlogCategories, slugifyBlogTaxonomy } from "@/features/blog/blog-uti
 import { routes } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
+import Image from "next/image";
 
 export function Header() {
   const blogCategories = getBlogCategories();
@@ -33,7 +34,7 @@ export function Header() {
       <header className="site-header">
         <div className="site-header__inner">
           <Link href={routes.home} className="brand-link">
-            <span className="brand-mark">XD</span>
+            <Image src="/images/logo.png" alt="XDCoderz Logo" width={42} height={42} className="rounded-md" />
             XDCoderz
           </Link>
           <nav className="site-nav">

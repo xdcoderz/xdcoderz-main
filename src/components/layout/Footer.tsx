@@ -5,6 +5,7 @@ import { products } from "@/data/products";
 import { services } from "@/data/services";
 import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -24,7 +25,7 @@ export function Footer() {
         <div className="site-footer__grid">
           <div className="site-footer__brand">
             <Link href={routes.home} className="brand-link">
-              <span className="brand-mark">XD</span>
+              <Image src="/images/logo.png" alt="XDCoderz Logo" width={42} height={42} className="rounded-md" />
               XDCoderz
             </Link>
             <p>{site.tagline}</p>
