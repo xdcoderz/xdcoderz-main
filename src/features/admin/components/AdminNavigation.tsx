@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Boxes, Mail, Users } from "lucide-react";
+import { BarChart3, Boxes, Mail, Users, Spotlight } from "lucide-react";
 
 const items = [
   { href: "/admin", label: "Overview", icon: BarChart3 },
   { href: "/admin/leads", label: "Leads", icon: Mail },
   { href: "/admin/subscribers", label: "Subscribers", icon: Users },
   { href: "/admin/lab", label: "Lab", icon: Boxes },
+  { href: "/admin/featured", label: "Featured", icon: Spotlight },
 ];
 
 export function AdminNavigation() {

@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  CircleDot,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, CircleDot } from "lucide-react";
+import { BlogSpotlight } from "@/components/home/BlogSpotlight";
 import { ActivityRail } from "@/components/home/ActivityRail";
-import { ProductCard } from "@/components/product/ProductCard";
-import { ProductExplorer } from "@/components/product/ProductExplorer";
+import { CompactApproach, CompactLab } from "@/components/home/CompactDiscovery";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { features } from "@/config/features";
-import { latestProducts, products } from "@/data/products";
 import { services } from "@/data/services";
 import { getAllBlogPosts } from "@/features/blog/blog-utils";
-import { OpenProductLab } from "@/features/open-product-lab";
-import { featuredTools, ToolCard } from "@/features/tools";
+import { FeaturedBanner } from "@/features/featured/components/FeaturedBanner";
+import { getPublicSpotlight } from "@/features/featured/server";
 import { routes } from "@/lib/routes";
+
+// Read eligibility on every request so scheduled promotions never depend on a cron job.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Software Systems for Measurable Growth",
@@ -35,47 +32,8 @@ const capabilities = [
   "Internal tools",
 ];
 
-const deliveryStages = [
-  {
-    number: "01",
-    label: "The constraint",
-    title: "Diagnose the friction worth removing.",
-    description:
-      "We identify where time, revenue, or execution quality is being lost and define the business result the software must create.",
-  },
-  {
-    number: "02",
-    label: "The decision",
-    title: "Shape the smallest system with strategic value.",
-    description:
-      "Scope follows commercial priority. Every workflow, integration, and interface must justify its place in the first release.",
-  },
-  {
-    number: "03",
-    label: "The build",
-    title: "Ship a focused, maintainable release.",
-    description:
-      "The product is built for real use, measured against the brief, and structured so the next iteration does not require a rebuild.",
-  },
-  {
-    number: "04",
-    label: "The leverage",
-    title: "Turn adoption into compounding advantage.",
-    description:
-      "Once the system is live, we use evidence from the workflow to prioritize improvements that increase speed, control, and capacity.",
-  },
-];
-
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(date));
-}
-
-export default function Home() {
-  const featuredProducts = latestProducts.slice(0, 3);
+export default async function Home() {
+  const spotlight = await getPublicSpotlight();
   const latestPost = features.blog ? getAllBlogPosts()[0] : undefined;
   const featuredServices = services.slice(0, 4);
 
@@ -136,140 +94,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="products" className="home-section home-section--surface">
-        <div className="home-container">
-          <div className="section-heading section-heading--split">
-            <div>
-              <p className="section-kicker">Available now / Latest products</p>
-              <h2>Software that earns its place in the workflow.</h2>
-            </div>
-            <div>
-              <p>
-                Every XDCoderz product starts with a costly bottleneck and is
-                built around a clearer, faster route to the result.
-              </p>
-              <ButtonLink href={routes.products} variant="ghost">
-                View all products
-                <ArrowRight size={16} aria-hidden="true" />
-              </ButtonLink>
-            </div>
-          </div>
-
-          <div className="home-product-stack">
-            {featuredProducts.map((product, index) => (
-              <ProductCard key={product.slug} product={product} featured={index === 0} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <OpenProductLab preview />
-
-      <section id="categories" className="home-section home-section--muted">
-        <div className="home-container">
-          <div className="section-heading section-heading--compact">
-            <p className="section-kicker">Product categories</p>
-            <h2>Find the right operating surface.</h2>
-            <p>
-              Browse products by platform while the catalog expands across
-              desktop, mobile, web, SaaS, and automation.
-            </p>
-          </div>
-          <ProductExplorer products={products} showCatalogLink />
-        </div>
-      </section>
-
-      <section id="approach" className="delivery-section">
-        <div className="home-container">
-          <div className="delivery-section__intro">
-            <p className="section-kicker">How XDCoderz builds</p>
-            <h2>From business constraint to operating advantage.</h2>
-            <p>
-              The process stays commercially grounded from the first decision
-              to the first measurable result.
-            </p>
-          </div>
-
-          <div className="delivery-list">
-            {deliveryStages.map((stage) => (
-              <article key={stage.number} className="delivery-step">
-                <div className="delivery-step__number">{stage.number}</div>
-                <div className="delivery-step__label">{stage.label}</div>
-                <div>
-                  <h3>{stage.title}</h3>
-                  <p>{stage.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="tools" className="home-section home-section--surface">
-        <div className="home-container">
-          <div className="section-heading section-heading--split">
-            <div>
-              <p className="section-kicker">Business tools / Open access</p>
-              <h2>Useful decisions before the larger investment.</h2>
-            </div>
-            <div>
-              <p>
-                Use focused planning and diagnostic tools to clarify budget,
-                expose workflow friction, and pressure-test the opportunity.
-              </p>
-              <ButtonLink href={routes.tools} variant="ghost">
-                Explore all tools
-                <ArrowRight size={16} aria-hidden="true" />
-              </ButtonLink>
-            </div>
-          </div>
-
-          <div className="home-tool-grid">
-            {featuredTools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} compact />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {latestPost && (
-        <section className="market-section">
-          <div className="home-container market-section__grid">
-            <div>
-              <p className="section-kicker">Market intelligence / Weekly</p>
-              <h2>Signals are only valuable when they improve a decision.</h2>
-              <p>
-                XDCoderz filters major technology and market shifts through a
-                builder&apos;s lens, then turns the strongest signals into practical
-                software opportunities.
-              </p>
-              <div className="market-section__actions">
-                <ButtonLink href={routes.blog}>
-                  Read the analysis
-                  <ArrowRight size={16} aria-hidden="true" />
-                </ButtonLink>
-                <ButtonLink href={routes.tool("project-ideas-generator")} variant="secondary">
-                  Generate project ideas
-                  <ArrowUpRight size={16} aria-hidden="true" />
-                </ButtonLink>
-              </div>
-            </div>
-
-            <Link href={routes.blogPost(latestPost.slug)} className="market-brief">
-              <div className="market-brief__meta">
-                <span>{latestPost.category}</span>
-                <span>{formatDate(latestPost.date)}</span>
-              </div>
-              <h3>{latestPost.title}</h3>
-              <p>{latestPost.description}</p>
-              <span className="market-brief__link">
-                Open the latest brief
-                <ArrowUpRight size={16} aria-hidden="true" />
-              </span>
-            </Link>
-          </div>
-        </section>
-      )}
+      <div id="products" className="scroll-mt-28">
+        {spotlight && <FeaturedBanner value={spotlight} />}
+      </div>
+      <CompactLab />
 
       <section id="services" className="home-section home-section--muted">
         <div className="home-container">
@@ -308,6 +136,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CompactApproach />
+
+      {latestPost && <BlogSpotlight post={latestPost} />}
 
       <section className="decision-section">
         <div className="home-container decision-section__grid">

@@ -1,0 +1,49 @@
+.spotlight { padding: 36px 24px 64px; background: var(--surface); border-bottom: 1px solid var(--border); overflow: clip; }
+.masthead { max-width: 1280px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: 13px; font-weight: 600; }
+.masthead span, .masthead a { display: inline-flex; gap: 10px; align-items: center; }
+.masthead a { padding-block: 10px; }
+.masthead a:hover { color: var(--accent-strong); }
+.rule { max-width: 1280px; height: 1px; background: var(--border); margin: 12px auto 40px; }
+.banner { max-width: 1280px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; }
+.overline { font: 12px var(--font-geist-mono), monospace; color: var(--muted-strong); text-transform: uppercase; display: flex; align-items: center; gap: 12px; }
+.overline span { color: var(--accent-strong); font-size: 20px; }
+.copy { min-width: 0; }
+.copy h2 { font-size: 52px; line-height: 1.1; font-weight: 650; margin: 20px 0; overflow-wrap: anywhere; }
+.badge { display: inline-block; font-size: 12px; color: var(--accent-strong); border-left: 2px solid var(--accent); padding-left: 10px; margin-top: 24px; }
+.description { max-width: 52ch; color: var(--muted-strong); line-height: 1.7; overflow-wrap: anywhere; }
+.cta { display: inline-flex; align-items: center; gap: 12px; background: var(--foreground); color: var(--surface); padding: 14px 20px; margin-top: 24px; font-weight: 600; transition: background 160ms; }
+.cta:hover { background: var(--accent-strong); color: var(--accent-contrast); }
+.cta:focus-visible, .actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.artboard { position: relative; padding: 12px 12px 0 0; min-width: 0; }
+.artboard::before { content: ""; position: absolute; inset: 0 0 28px 14px; background: var(--mint-card); border: 1px solid var(--border-strong); border-radius: 6px; transform: rotate(3deg); }
+.art { position: relative; border: 1px solid var(--border-strong); border-radius: 6px; overflow: hidden; background: var(--surface-raised); margin: 0; }
+.art figcaption { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--border); font: 11px var(--font-geist-mono), monospace; text-transform: uppercase; color: var(--muted-strong); }
+.visual { aspect-ratio: 3/2; overflow: hidden; background: var(--surface-muted); }
+.visual img { width: 100%; height: 100%; object-fit: contain; }
+.editor { margin-top: 24px; }
+.status { font-size: 14px; color: var(--muted-strong); margin-bottom: 16px; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form label { display: grid; align-content: start; gap: 8px; min-width: 0; font-size: 14px; font-weight: 600; }
+.form input:not([type=checkbox]), .form textarea { width: 100%; min-width: 0; border: 1px solid var(--border); background: var(--surface); color: var(--foreground); padding: 12px; border-radius: 4px; }
+.form input:focus, .form textarea:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.form small, .hint { color: var(--muted); font-size: 12px; font-weight: 400; }
+.form .toggle { display: flex; align-items: center; align-self: center; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+.hint, .actions, .form [role=status] { grid-column: 1/-1; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.actions button { display: inline-flex; gap: 8px; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: var(--surface); }
+.actions button:hover { background: var(--accent-soft); }
+.actions button:disabled { opacity: .5; cursor: not-allowed; }
+.preview { margin-top: 36px; }
+.preview .banner { gap: 24px; }
+.preview h2 { font-size: 32px; }
+@media(max-width: 700px) {
+  .spotlight { padding: 32px 20px; }
+  .banner { grid-template-columns: 1fr; gap: 24px; }
+  .copy h2 { font-size: 32px; }
+  .masthead { font-size: 11px; gap: 12px; }
+  .masthead span, .masthead a { gap: 6px; }
+  .rule { margin-bottom: 28px; }
+  .form { grid-template-columns: 1fr; }
+}
+
